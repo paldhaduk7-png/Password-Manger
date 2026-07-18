@@ -1,13 +1,33 @@
 import React,{useState} from 'react'
+import Disply from './Disply.jsx';
 
 const Home = () => {
 
-// let [user,setUser]=useState({
-//   'url':"",
-//   'userName':'',
-//   ''
-// })
+let [user, setUser] = useState({
+  url: '',
+  userName: '',
+  password: '',
+})
+const [users, setUsers] = useState([]);
+let handelInputChange = (e) => {
+  setUser({
+    ...user,
+    [e.target.name]: e.target.value
+  });
+};
 
+
+let handelSubmit=()=>{
+  console.log(user);
+
+  setUsers([...users, user]); // Add to array
+
+  setUser({
+     'url':'',
+  'userName':'',
+  'password':'',
+  })
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 font-sans pb-12">
@@ -30,6 +50,9 @@ const Home = () => {
           <input
             type="text"
             placeholder="🔗  Enter website URL"
+            name='url'
+            value={user.url}
+            onChange={handelInputChange}
             className="w-full px-4 py-3 rounded-xl border-2 border-purple-100 bg-purple-50 text-purple-900 placeholder-purple-300 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200 text-sm transition-all"
           />
         </div>
@@ -39,20 +62,26 @@ const Home = () => {
           <input
             type="text"
             placeholder="👤  Username"
+            name='userName'
+            value={user.userName}
+            onChange={handelInputChange}
             className="flex-1 min-w-[130px] px-4 py-3 rounded-xl border-2 border-purple-100 bg-purple-50 text-purple-900 placeholder-purple-300 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200 text-sm transition-all"
           />
           <input
             type="password"
             placeholder="🔒  Password"
+            name='password'
+            value={user.password}
+            onChange={handelInputChange}
             className="flex-1 min-w-[130px] px-4 py-3 rounded-xl border-2 border-purple-100 bg-purple-50 text-purple-900 placeholder-purple-300 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200 text-sm transition-all"
           />
-          <button className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white rounded-xl text-sm font-medium shadow-lg shadow-purple-400/40 hover:-translate-y-0.5 hover:shadow-purple-500/50 active:scale-95 transition-all">
+          <button onClick={handelSubmit} className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white rounded-xl text-sm font-medium shadow-lg shadow-purple-400/40 hover:-translate-y-0.5 hover:shadow-purple-500/50 active:scale-95 transition-all">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="16" />
               <line x1="8" y1="12" x2="16" y2="12" />
             </svg>
-            Add Password
+            Submit
           </button>
         </div>
 
@@ -63,14 +92,31 @@ const Home = () => {
           Your Passwords
         </p>
 
-        <div className="flex flex-col items-center justify-center py-10 text-purple-200">
-          <svg className="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-          <p className="text-sm text-purple-300">No passwords saved yet. Add one above!</p>
-        </div>
+         
+        
+  {users.length === 0 ? (
+  <div className="flex flex-col items-center justify-center py-10 text-purple-200">
+    <div className="py-5">
+      <div className="flex flex-col items-center text-purple-200">
+        <svg
+          className="w-10 h-10 mb-3"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <rect x="3" y="11" width="18" height="11" rx="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
 
+        <p>No passwords saved yet. Add one above!</p>
+      </div>
+    </div>
+  </div>
+) : (
+        <Disply  users={users} />
+)}
+      
       </div>
     </div>
   )
