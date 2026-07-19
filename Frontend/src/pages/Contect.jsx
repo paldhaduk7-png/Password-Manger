@@ -1,5 +1,5 @@
 import React from "react";
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import {FaUser,FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 const Contact = () => {
   return (
@@ -12,6 +12,14 @@ const Contact = () => {
         </h1>
 
         <div className="space-y-6">
+
+          <div className="flex items-center gap-4 bg-white/10 p-4 rounded-xl">
+            <FaUser className="text-2xl text-green-400" />
+            <div>
+              <h3 className="font-semibold">Author</h3>
+              <p>Dhaduk Pal G.</p>
+            </div>
+          </div>
 
           <div className="flex items-center gap-4 bg-white/10 p-4 rounded-xl">
             <FaEnvelope className="text-2xl text-green-400" />
