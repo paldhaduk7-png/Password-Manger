@@ -1,5 +1,7 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Disply from './Disply.jsx';
+import axios from "axios";
+import { toast } from 'sonner'
 
 const Home = () => {
 
@@ -8,6 +10,8 @@ let [user, setUser] = useState({
   userName: '',
   password: '',
 })
+
+
 const [users, setUsers] = useState([]);
 let handelInputChange = (e) => {
   setUser({
@@ -16,18 +20,44 @@ let handelInputChange = (e) => {
   });
 };
 
-
-let handelSubmit=()=>{
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+let handelSubmit=async ()=>{
   console.log(user);
 
-  setUsers([...users, user]); // Add to array
+  const newUsers = [...users, user];
+  setUsers(newUsers);
 
   setUser({
      'url':'',
   'userName':'',
   'password':'',
   })
-}
+
+  //post password
+  try {
+    await axios.post(`${BASE_URL}/addPassword`, {
+    weburl: user.url,
+    username: user.userName,
+    password: user.password
+}); // send only the new entry
+
+    if (res.data.success) {
+      toast.success(res.data.message);
+    }
+  } catch (error) {
+    console.log(error.response?.data);
+    toast.error(error.response?.data?.message || "Something went wrong");
+  }
+};
+
+
+
+
+// useEffect(()=>{
+//    getPassword();
+// }, []);
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 font-sans pb-12">
@@ -43,7 +73,7 @@ let handelSubmit=()=>{
       </div>
 
       {/* Card */}
-     <div className="bg-white/95 rounded-2xl max-w-2xl mx-auto px-8 py-7 shadow-2xl shadow-purple-900/30 min-h-[480px]">
+     <div className="bg-white/95 rounded-2xl w-[90%] max-w-5xl mx-auto px-8 py-7 shadow-2xl shadow-purple-900/30 min-h-[575px]">
 
         {/* URL input */}
         <div className="mb-3">
@@ -121,5 +151,6 @@ let handelSubmit=()=>{
     </div>
   )
 }
+
 
 export default Home

@@ -1,4 +1,11 @@
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 
 export default function Disply({users}){
     return(
@@ -9,6 +16,7 @@ export default function Disply({users}){
       <th className="px-4 py-3 text-left">Website</th>
       <th className="px-4 py-3 text-left">Username</th>
       <th className="px-4 py-3 text-left">Password</th>
+      <th className="px-4 py-3 text-left">Action</th>
     </tr>
   </thead>
 
@@ -28,6 +36,28 @@ export default function Disply({users}){
 
         <td className="px-4 py-3">
           {item.password}
+        </td>
+
+        <td className="px-4 py-3">
+          <DropdownMenu>
+  <DropdownMenuTrigger>
+      <Button variant="ghost" size="icon" type="button">
+    <MoreVertical className="h-5 w-5 cursor-pointer" />
+    </Button>
+  </DropdownMenuTrigger>
+
+  <DropdownMenuContent>
+    <DropdownMenuItem>
+      <Pencil className="mr-2 h-4 w-4" />
+      Update
+    </DropdownMenuItem>
+
+    <DropdownMenuItem className="text-red-500">
+      <Trash2 className="mr-2 h-4 w-4" />
+      Delete
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
         </td>
       </tr>
     ))}
