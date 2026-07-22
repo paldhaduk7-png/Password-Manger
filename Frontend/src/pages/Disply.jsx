@@ -1,13 +1,18 @@
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Disply({users}){
+
+
+const [visibleIndex, setVisibleIndex] = useState(null);
+
     return(
         <>
         <table className="w-full overflow-hidden rounded-xl border border-purple-200">
@@ -35,16 +40,29 @@ export default function Disply({users}){
         </td>
 
         <td className="px-4 py-3">
-          {item.password}
+            <div className="flex items-center gap-2">
+    <span>
+  {visibleIndex === index ? item.password : "********"}
+</span>
+{visibleIndex === index ? (
+  <Eye
+    onClick={() => setVisibleIndex(null)}
+    className="size-5 cursor-pointer"
+  />
+) : (
+  <EyeOff
+    onClick={() => setVisibleIndex(index)}
+    className="size-5 cursor-pointer"
+  />
+)}
+  </div>
         </td>
 
         <td className="px-4 py-3">
           <DropdownMenu>
   <DropdownMenuTrigger>
-      <Button variant="ghost" size="icon" type="button">
-    <MoreVertical className="h-5 w-5 cursor-pointer" />
-    </Button>
-  </DropdownMenuTrigger>
+  <MoreVertical className="h-5 w-5 cursor-pointer" />
+</DropdownMenuTrigger>
 
   <DropdownMenuContent>
     <DropdownMenuItem>

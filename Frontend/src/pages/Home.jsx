@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import Disply from './Disply.jsx';
 import axios from "axios";
 import { toast } from 'sonner'
+import { Eye, EyeOff } from "lucide-react";
 
 const Home = () => {
 
@@ -11,6 +12,7 @@ let [user, setUser] = useState({
   password: '',
 })
 
+const [showPassword, setShowPassword] = useState(false);
 
 const [users, setUsers] = useState([]);
 let handelInputChange = (e) => {
@@ -20,28 +22,33 @@ let handelInputChange = (e) => {
   });
 };
 
+const showpassword= ()=>{
+  setShowPassword(true)
+}
+const notShowpassword= ()=>{
+setShowPassword(false)
+}
+
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 let handelSubmit=async ()=>{
   console.log(user);
 
-  const newUsers = [...users, user];
-  setUsers(newUsers);
-
-  setUser({
-     'url':'',
-  'userName':'',
-  'password':'',
-  })
-
   //post password
   try {
-    await axios.post(`${BASE_URL}/addPassword`, {
+  const res=  await axios.post(`${BASE_URL}/addPassword`, {
     weburl: user.url,
     username: user.userName,
     password: user.password
 }); // send only the new entry
 
     if (res.data.success) {
+      setUsers([...users, user]);
+
+            setUser({
+                url:"",
+                userName:"",
+                password:""
+            });
       toast.success(res.data.message);
     }
   } catch (error) {
@@ -97,14 +104,22 @@ let handelSubmit=async ()=>{
             onChange={handelInputChange}
             className="flex-1 min-w-[130px] px-4 py-3 rounded-xl border-2 border-purple-100 bg-purple-50 text-purple-900 placeholder-purple-300 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200 text-sm transition-all"
           />
+          <div className='flex '>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="🔒  Password"
             name='password'
             value={user.password}
             onChange={handelInputChange}
             className="flex-1 min-w-[130px] px-4 py-3 rounded-xl border-2 border-purple-100 bg-purple-50 text-purple-900 placeholder-purple-300 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200 text-sm transition-all"
+          
           />
+          {
+            showPassword  ? <Eye onClick={notShowpassword} className='mt-2.5 size-6' /> : <EyeOff onClick={showpassword} className='mt-2.5 size-6' />
+          }
+          </div>
+            
+
           <button onClick={handelSubmit} className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white rounded-xl text-sm font-medium shadow-lg shadow-purple-400/40 hover:-translate-y-0.5 hover:shadow-purple-500/50 active:scale-95 transition-all">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <circle cx="12" cy="12" r="10" />

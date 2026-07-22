@@ -38,34 +38,34 @@ export const addPassword= async (req,res)=>{
 
 }
 
-// 2) R:- (Create new password)
-export  const getPassword= async(req,res)=>{
-   
+// 2) R:- (get  password)
+export const getPassword = async (req, res) => {
   try {
-     const password = await Password.findById(req.params.id);
-        
-      if(!password){
-        return res.status(404).json({
-          message:"password is not found!!!",
-          success:false
-        })
-      }
 
-      if(password){
-          return res.status(200).json({
-          message:password.password,
-          success:false
-        })
-      }
-  } 
-  
-catch (error) {
+
+    // assword.find() always returns an array
+    const passwords = await Password.find();
+
+    if (passwords.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No passwords found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: passwords,
+    });
+
+  } catch (error) {
     return res.status(500).json({
+      success: false,
       message: error.message,
-       success: false
-    }) 
+    });
   }
-}
+};
+
 
 // 3) U:- Update new password
 export const updatePassword = async (req, res) => {
