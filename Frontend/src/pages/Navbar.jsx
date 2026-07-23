@@ -13,7 +13,7 @@ const Navbar = () => {
       {/* Links */}
       <ul className='flex items-center gap-6 text-lg font-medium'>
         <li>
-          <Link to="/home" className='hover:text-gray-200 transition duration-200'>
+          <Link to="/" className='hover:text-gray-200 transition duration-200'>
             Home
           </Link>
         </li>

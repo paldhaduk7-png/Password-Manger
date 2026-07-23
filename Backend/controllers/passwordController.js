@@ -42,14 +42,7 @@ export const addPassword= async (req,res)=>{
 export const  getAllPasswords= async(req,res)=>{
   try {
   const passwords = await Password.find();
-
-    if (passwords.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No passwords found",
-      });
-    }
-
+// console.log(passwords);
     return res.status(200).json({
       success: true,
       data: passwords,
@@ -132,7 +125,7 @@ export const updatePassword = async (req, res) => {
 
 
 // 4) D:- (delet password)
-export const deletePasseord = async(req,res)=>{
+export const deletePassword = async(req,res)=>{
 
  try {
    const delet=await Password.findByIdAndDelete(req.params.id);

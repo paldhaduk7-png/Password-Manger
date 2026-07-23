@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contect from './pages/Contect'
 import Manger from './pages/Manger'
+import UpadteData from './curd Method/update';
 
 
 
@@ -34,6 +35,13 @@ function App() {
        <>
        <Navbar />
        <Contect />
+       </>
+    },
+    {
+       path:"/update",
+       element:
+       <>
+       <UpadteData />
        </>
     },
   ]

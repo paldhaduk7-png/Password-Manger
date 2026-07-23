@@ -7,10 +7,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function Disply({users}){
+export default function Disply({users , getPasswords}){
 
-
+console.log(users);
 const [visibleIndex, setVisibleIndex] = useState(null);
 
 const showPassword = (index) => {
@@ -20,6 +22,28 @@ const showPassword = (index) => {
     setVisibleIndex(null);
   }, 5000); // Hide after 5 seconds
 };
+
+const navigate=useNavigate();
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+console.log(BASE_URL);
+const updateData= ()=>{
+  console.log("button is cliked");
+   navigate("/update")
+}
+
+const deletePassword= async (id)=>{
+   console.log(id);
+  try {
+    await axios.delete(`${BASE_URL}/${id}`);
+      console.log("Deleted successfully");
+
+    await getPasswords();
+
+    console.log("Refetched data");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
     return(
         <>
@@ -36,6 +60,7 @@ const showPassword = (index) => {
   <tbody>
    
     {users.map((item, index) => (
+      
       <tr
         key={index}
         className="border-b border-purple-100 hover:bg-purple-50"
@@ -76,12 +101,12 @@ const showPassword = (index) => {
 </DropdownMenuTrigger>
 
   <DropdownMenuContent>
-    <DropdownMenuItem>
-      <Pencil  className="mr-2 h-4 w-4" />
+    <DropdownMenuItem onClick={updateData} className='cursor-pointe'>
+      <Pencil  className="mr-2 h-4 w-4 r" />
       Update
     </DropdownMenuItem>
 
-    <DropdownMenuItem className="text-red-500">
+    <DropdownMenuItem onClick={()=> deletePassword(item._id)} className="text-red-500">
       <Trash2 className="mr-2 h-4 w-4" />
       Delete
     </DropdownMenuItem>

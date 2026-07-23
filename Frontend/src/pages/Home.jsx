@@ -31,8 +31,9 @@ setShowPassword(false)
 }
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 let handelSubmit=async ()=>{
-  console.log(user);
+  // console.log(user);
 
   //post password
   try {
@@ -43,7 +44,8 @@ let handelSubmit=async ()=>{
 }); // send only the new entry
 
     if (res.data.success) {
-      setUsers([...users, user]);
+     
+      await fetchPasswords(); // <-- Refresh from MongoDB
 
             setUser({
                 url:"",
@@ -59,17 +61,16 @@ let handelSubmit=async ()=>{
 };
 
 
-useEffect(() => {
-  const fetchPasswords = async () => {
-    try {
-      const res = await axios.get(BASE_URL);
-       console.log(res);   
-      setUsers(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const fetchPasswords = async () => {
+  try {
+    const res = await axios.get(BASE_URL);
+    setUsers(res.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+useEffect(() => {
   fetchPasswords();
 }, []);
 
@@ -168,7 +169,7 @@ useEffect(() => {
     </div>
   </div>
 ) : (
-        <Disply  users={users} />
+        <Disply  users={users} getPasswords={fetchPasswords} />
 )}
       
       </div>
