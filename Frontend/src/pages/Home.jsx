@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from 'sonner'
 import { Eye, EyeOff } from "lucide-react";
 
+
 const Home = () => {
 
 let [user, setUser] = useState({
@@ -58,11 +59,19 @@ let handelSubmit=async ()=>{
 };
 
 
+useEffect(() => {
+  const fetchPasswords = async () => {
+    try {
+      const res = await axios.get(BASE_URL);
+       console.log(res);   
+      setUsers(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-
-// useEffect(()=>{
-//    getPassword();
-// }, []);
+  fetchPasswords();
+}, []);
 
 
 

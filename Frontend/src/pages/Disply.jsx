@@ -13,6 +13,14 @@ export default function Disply({users}){
 
 const [visibleIndex, setVisibleIndex] = useState(null);
 
+const showPassword = (index) => {
+  setVisibleIndex(index);
+
+  setTimeout(() => {
+    setVisibleIndex(null);
+  }, 5000); // Hide after 5 seconds
+};
+
     return(
         <>
         <table className="w-full overflow-hidden rounded-xl border border-purple-200">
@@ -26,37 +34,40 @@ const [visibleIndex, setVisibleIndex] = useState(null);
   </thead>
 
   <tbody>
+   
     {users.map((item, index) => (
       <tr
         key={index}
         className="border-b border-purple-100 hover:bg-purple-50"
       >
         <td className="px-4 py-3">
-          {item.url}
+          <a href={item.weburl} target="_blank" >{item.weburl}</a>
         </td>
 
         <td className="px-4 py-3">
-          {item.userName}
+          {item.username}
         </td>
 
         <td className="px-4 py-3">
-            <div className="flex items-center gap-2">
-    <span>
-  {visibleIndex === index ? item.password : "********"}
-</span>
-{visibleIndex === index ? (
-  <Eye
-    onClick={() => setVisibleIndex(null)}
-    className="size-5 cursor-pointer"
-  />
-) : (
-  <EyeOff
-    onClick={() => setVisibleIndex(index)}
-    className="size-5 cursor-pointer"
-  />
-)}
-  </div>
+     <div className="flex items-center gap-2">
+  <span className="inline-block w-32">
+    {visibleIndex === index ? item.password : "********"}
+  </span>
+
+  {visibleIndex === index ? (
+    <Eye
+      onClick={() => setVisibleIndex(null)}
+      className="size-5 cursor-pointer flex-shrink-0"
+    />
+  ) : (
+    <EyeOff
+      onClick={() => showPassword(index)}
+      className="size-5 cursor-pointer flex-shrink-0"
+    />
+  )}
+</div>
         </td>
+        
 
         <td className="px-4 py-3">
           <DropdownMenu>
@@ -66,7 +77,7 @@ const [visibleIndex, setVisibleIndex] = useState(null);
 
   <DropdownMenuContent>
     <DropdownMenuItem>
-      <Pencil className="mr-2 h-4 w-4" />
+      <Pencil  className="mr-2 h-4 w-4" />
       Update
     </DropdownMenuItem>
 

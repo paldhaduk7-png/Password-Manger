@@ -1,5 +1,5 @@
 import {Password} from "../models/Password.js";
-import bcrypt from "bcryptjs";
+
 
 
 // 1) C:- Post password
@@ -39,6 +39,33 @@ export const addPassword= async (req,res)=>{
 }
 
 // 2) R:- (get  password)
+export const  getAllPasswords= async(req,res)=>{
+  try {
+  const passwords = await Password.find();
+
+    if (passwords.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No passwords found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: passwords,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+
+}
+
+
+
 export const getPassword = async (req, res) => {
   try {
 
@@ -52,7 +79,7 @@ export const getPassword = async (req, res) => {
         message: "No passwords found",
       });
     }
-
+     
     return res.status(200).json({
       success: true,
       data: passwords,
@@ -88,7 +115,7 @@ export const updatePassword = async (req, res) => {
         message: "Password not found",
       });
     }
-
+      
     return res.status(200).json({
       success: true,
       message: "Password updated successfully",
