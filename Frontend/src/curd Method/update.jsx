@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Navbar from "../pages/Navbar";
 import { useLocation } from "react-router-dom";
@@ -7,6 +7,15 @@ import { toast } from 'sonner'
 import { useNavigate } from "react-router-dom";
 
 export default function UpdateData() {
+
+  const location = useLocation();
+console.log(location.state);
+const id = location.state?.id;
+console.log(id);
+
+const navigate = useNavigate();
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   const [user, setUser] = useState({
     url: "",
     userName: "",
@@ -22,16 +31,31 @@ export default function UpdateData() {
     });
   };
 
+  useEffect(() => {
+  const getPassword = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/${id}`);
+
+      if (res.data.success) {
+        setUser({
+          url: res.data.data.weburl,
+          userName: res.data.data.username,
+          password: res.data.data.password,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load password");
+    }
+  };
+
+  if (id) {
+    getPassword();
+  }
+}, [id]);
 
   
-const location = useLocation();
-console.log(location.state);
-const id = location.state?.id;
-console.log(id);
 
-
-const navigate = useNavigate();
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 const UpdatePassword= async()=>{
   try {
     const res=  await axios.put(`${BASE_URL}/${id}`, {
@@ -46,7 +70,7 @@ if (res.data.success) {
                 password:""
             });
       toast.success(res.data.message);
-      navigate("/");
+      navigate("/")
     }
   } catch (error) {
      console.log(error.response?.data);

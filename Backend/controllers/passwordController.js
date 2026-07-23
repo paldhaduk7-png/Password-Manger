@@ -61,21 +61,18 @@ export const  getAllPasswords= async(req,res)=>{
 
 export const getPassword = async (req, res) => {
   try {
+    const password = await Password.findById(req.params.id);
 
-
-    // assword.find() always returns an array
-    const passwords = await Password.find();
-
-    if (passwords.length === 0) {
+    if (!password) {
       return res.status(404).json({
         success: false,
-        message: "No passwords found",
+        message: "Password not found",
       });
     }
-     
+
     return res.status(200).json({
       success: true,
-      data: passwords,
+      data: password,
     });
 
   } catch (error) {
