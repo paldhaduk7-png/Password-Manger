@@ -25,11 +25,12 @@ const showPassword = (index) => {
 
 const navigate=useNavigate();
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-console.log(BASE_URL);
-const updateData= ()=>{
-  console.log("button is cliked");
-   navigate("/update")
-}
+// console.log(BASE_URL);
+const updateData = (id) => {
+  navigate("/update", {
+    state: { id }
+  });
+};
 
 const deletePassword= async (id)=>{
    console.log(id);
@@ -101,7 +102,7 @@ const deletePassword= async (id)=>{
 </DropdownMenuTrigger>
 
   <DropdownMenuContent>
-    <DropdownMenuItem onClick={updateData} className='cursor-pointe'>
+    <DropdownMenuItem onClick={()=>updateData(item._id)} className='cursor-pointe'>
       <Pencil  className="mr-2 h-4 w-4 r" />
       Update
     </DropdownMenuItem>

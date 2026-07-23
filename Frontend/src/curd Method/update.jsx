@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Navbar from "../pages/Navbar";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { toast } from 'sonner'
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateData() {
   const [user, setUser] = useState({
@@ -17,6 +21,40 @@ export default function UpdateData() {
       [e.target.name]: e.target.value,
     });
   };
+
+
+  
+const location = useLocation();
+console.log(location.state);
+const id = location.state?.id;
+console.log(id);
+
+
+const navigate = useNavigate();
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const UpdatePassword= async()=>{
+  try {
+    const res=  await axios.put(`${BASE_URL}/${id}`, {
+    weburl: user.url,
+    username: user.userName,
+    password: user.password
+}); 
+if (res.data.success) {
+            setUser({
+                url:"",
+                userName:"",
+                password:""
+            });
+      toast.success(res.data.message);
+      navigate("/");
+    }
+  } catch (error) {
+     console.log(error.response?.data);
+    toast.error(error.response?.data?.message || "Something went wrong");
+  }
+
+}
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500">
@@ -89,7 +127,7 @@ export default function UpdateData() {
             )}
           </div>
 
-          <button
+          <button onClick={UpdatePassword}
             className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:scale-105 transition"
           >
             Update
