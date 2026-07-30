@@ -8,10 +8,56 @@ import {
   User,
   Phone
 } from "lucide-react";
-
+import { toast } from "sonner";
+import axios  from "axios";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
+
+const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
+const navigate=useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+   const [input, setInput] = useState({
+  fullname: "",
+  email: "",
+  phonenumber: "",
+  password: "",
+  confirmPassword: ""
+});
+
+const changeEventHandler = (e) => {
+  setInput({
+    ...input,
+    [e.target.name]: e.target.value
+  });
+};
+
+const submitData = async (e) => {
+  e.preventDefault();
+
+  if (input.password !== input.confirmPassword) {
+    toast.error("Passwords do not match");
+    return;
+  }
+
+
+  // Axios request next
+try {
+const res = await axios.post(`${BASE_URL}/register`, input);
+
+  if (res.data.success) {
+  toast.success(res.data.message);
+  navigate("/login");
+}
+} catch (error) {
+   toast.error(
+    error.response?.data?.message || "Registration failed"
+  );
+}
+
+};
 
   return (
     <div className="min-h-[calc(100vh-60px)] bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 flex items-center justify-center px-4 py-6">
@@ -33,7 +79,7 @@ const Signup = () => {
           </p>
         </div>
 
-        <form className="space-y-4">
+        <form onSubmit={submitData} className="space-y-4">
 
           {/* Name + Phone */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -53,6 +99,8 @@ const Signup = () => {
                 <input
                   type="text"
                   name="fullname"
+                  value={input.fullname}
+                  onChange={changeEventHandler}
                   placeholder="Your name"
                   className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl
                   outline-none focus:border-purple-500 focus:ring-2
@@ -76,6 +124,8 @@ const Signup = () => {
                 <input
                   type="tel"
                   name="phonenumber"
+                  value={input.phonenumber}
+                  onChange={changeEventHandler}
                   placeholder="Phone number"
                   className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl
                   outline-none focus:border-purple-500 focus:ring-2
@@ -101,6 +151,8 @@ const Signup = () => {
               <input
                 type="email"
                 name="email"
+                value={input.email}
+                onChange={changeEventHandler}
                 placeholder="Enter your email"
                 className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl
                 outline-none focus:border-purple-500 focus:ring-2
@@ -124,6 +176,8 @@ const Signup = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
+                value={input.password}
+                onChange={changeEventHandler}
                 placeholder="Create a password"
                 className="w-full pl-10 pr-11 py-3 border border-gray-300 rounded-xl
                 outline-none focus:border-purple-500 focus:ring-2
@@ -155,6 +209,8 @@ const Signup = () => {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
+                value={input.confirmPassword}
+                onChange={changeEventHandler}
                 placeholder="Confirm your password"
                 className="w-full pl-10 pr-11 py-3 border border-gray-300 rounded-xl
                 outline-none focus:border-purple-500 focus:ring-2

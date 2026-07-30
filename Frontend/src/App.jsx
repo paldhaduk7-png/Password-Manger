@@ -8,7 +8,7 @@ import Manger from './pages/Manger'
 import UpadteData from './curd Method/update';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
-
+import { Toaster } from "sonner";
 
 
 function App() {
@@ -69,6 +69,7 @@ function App() {
   return (
     <>
     <RouterProvider router={passwordRouter} />
+    <Toaster position="bottom-right" />
     </>
   )
 }
