@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../ContextAPI/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import { toast } from "sonner";
@@ -8,6 +9,7 @@ const Login = () => {
 
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
   const navigate = useNavigate();
+ const { setUser } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,6 +40,7 @@ const Login = () => {
       );
 
       if (res.data.success) {
+         setUser(res.data.user);
         toast.success(res.data.message);
         navigate("/");
       }
