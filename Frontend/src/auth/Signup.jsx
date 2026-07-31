@@ -57,6 +57,7 @@ const res = await axios.post(`${BASE_URL}/register`, input);
   );
 }
 
+
 };
 
   return (
