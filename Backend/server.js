@@ -4,9 +4,10 @@ import dotenv from "dotenv"
 import passwordRoutes from "./routes/passwordRoutes.js"
 import router from "./routes/user.js"
 import cors from "cors"
-
+import cookieParser from "cookie-parser";
 
 const app=express();
+app.use(cookieParser());
 
 dotenv.config()
 app.use(express.json())

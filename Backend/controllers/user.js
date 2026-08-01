@@ -12,15 +12,16 @@ export const register=async(req,res)=>{
         success: false,
       });
     }
+ 
+       let user = await User.findOne({ email: email.toLowerCase() });
 
- let user= await User.findOne({ email: email.toLowerCase() });
- if(user){
-     return res.status(400).json({
-        message: "Email is Alrady Exist",
+    if (user) {
+      return res.status(400).json({
+        message: "Email is Already Exist",
         success: false,
       });
- }       
-
+    }
+  
  let hasedPassword=await bcrypt.hash(password,10);
 
  await User.create({

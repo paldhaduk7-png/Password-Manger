@@ -35,7 +35,7 @@ const updateData = (id) => {
 const deletePassword= async (id)=>{
    console.log(id);
   try {
-    await axios.delete(`${BASE_URL}/${id}`);
+    await axios.delete(`${BASE_URL}/${id}`,{withCredentials: true});
       console.log("Deleted successfully");
 
     await getPasswords();
