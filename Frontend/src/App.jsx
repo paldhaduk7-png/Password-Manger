@@ -6,12 +6,31 @@ import About from './pages/About'
 import Contect from './pages/Contect'
 import Manger from './pages/Manger'
 import UpadteData from './curd Method/update';
-
+import Login from './auth/Login';
+import Signup from './auth/Signup';
+import { Toaster } from "sonner";
 
 
 function App() {
  
  const  passwordRouter= createBrowserRouter([
+      {
+       path:"/signup",
+       element:
+       <>
+       <Navbar />
+       <Signup />
+       </>
+    },
+   {
+       path:"/login",
+       element:
+       <>
+       <Navbar />
+       <Login />
+      
+       </>
+    },
     {
        path:"/",
        element:
@@ -50,6 +69,7 @@ function App() {
   return (
     <>
     <RouterProvider router={passwordRouter} />
+    <Toaster position="bottom-right" />
     </>
   )
 }

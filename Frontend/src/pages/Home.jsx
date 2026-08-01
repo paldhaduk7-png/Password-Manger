@@ -32,26 +32,29 @@ setShowPassword(false)
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-let handelSubmit=async ()=>{
-  // console.log(user);
-
-  //post password
+let handelSubmit = async () => {
   try {
-  const res=  await axios.post(`${BASE_URL}/addPassword`, {
-    weburl: user.url,
-    username: user.userName,
-    password: user.password
-}); // send only the new entry
+    const res = await axios.post(
+      `${BASE_URL}/addPassword`,
+      {
+        weburl: user.url,
+        username: user.userName,
+        password: user.password
+      },
+      {
+        withCredentials: true
+      }
+    );
 
     if (res.data.success) {
-     
-      await fetchPasswords(); // <-- Refresh from MongoDB
+      await fetchPasswords();
 
-            setUser({
-                url:"",
-                userName:"",
-                password:""
-            });
+      setUser({
+        url: "",
+        userName: "",
+        password: ""
+      });
+
       toast.success(res.data.message);
     }
   } catch (error) {
@@ -63,7 +66,10 @@ let handelSubmit=async ()=>{
 
 const fetchPasswords = async () => {
   try {
-    const res = await axios.get(BASE_URL);
+      const res = await axios.get(BASE_URL, {
+      withCredentials: true
+    });
+    
     setUsers(res.data.data);
   } catch (error) {
     console.log(error);

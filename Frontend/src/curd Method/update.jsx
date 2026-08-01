@@ -34,7 +34,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
   useEffect(() => {
   const getPassword = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/${id}`);
+      const res = await axios.get(`${BASE_URL}/${id}`,{withCredentials: true});
 
       if (res.data.success) {
         setUser({
@@ -62,7 +62,7 @@ const UpdatePassword= async()=>{
     weburl: user.url,
     username: user.userName,
     password: user.password
-}); 
+},{withCredentials: true}); 
 if (res.data.success) {
             setUser({
                 url:"",

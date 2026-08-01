@@ -20,7 +20,8 @@ export const addPassword= async (req,res)=>{
     await Password.create({
       weburl,
       username,
-      password
+      password,
+      user: req.id
     });
 
        return res.status(201).json({
@@ -41,7 +42,7 @@ export const addPassword= async (req,res)=>{
 // 2) R:- (get  password)
 export const  getAllPasswords= async(req,res)=>{
   try {
-  const passwords = await Password.find();
+  const passwords = await Password.find({ user: req.id});
 // console.log(passwords);
     return res.status(200).json({
       success: true,
