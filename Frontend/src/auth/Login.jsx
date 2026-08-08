@@ -9,7 +9,7 @@ const Login = () => {
 
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
   const navigate = useNavigate();
- const { setUser } = useContext(AuthContext);
+  const { setUser, updateUser } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,7 +40,11 @@ const Login = () => {
       );
 
       if (res.data.success) {
-         setUser(res.data.user);
+        if (updateUser) {
+          updateUser(res.data.user);
+        } else {
+          setUser(res.data.user);
+        }
         toast.success(res.data.message);
         navigate("/");
       }
