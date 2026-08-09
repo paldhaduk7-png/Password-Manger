@@ -1,4 +1,3 @@
-import React from "react";
 
 const ImagePreviewModal = ({ open, setOpen, image }) => {
   if (!open || !image) return null;

@@ -1,24 +1,23 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../ContextAPI/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
 
 const Login = () => {
-
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
   const navigate = useNavigate();
   const { setUser, updateUser } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [input, setInput] = useState({
     email: "",
     password: ""
   });
 
-  // Handle input changes
   const changeEventHandler = (e) => {
     setInput({
       ...input,
@@ -26,9 +25,9 @@ const Login = () => {
     });
   };
 
-  // Handle login
   const submitData = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await axios.post(
@@ -45,143 +44,126 @@ const Login = () => {
         } else {
           setUser(res.data.user);
         }
-        toast.success(res.data.message);
+        toast.success(res.data.message || "Logged in successfully!");
         navigate("/");
       }
-
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Login failed"
       );
+    } finally {
+      setLoading(false);
     }
-
-
   };
 
-
   return (
-    <div className="min-h-[calc(100vh-60px)] bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 flex items-center justify-center px-4 py-6">
-
-      <div className="w-full max-w-md bg-white/95 rounded-3xl shadow-2xl px-8 py-8">
+    <div className="py-12 px-4 sm:px-6 flex items-center justify-center min-h-[calc(100vh-80px)]">
+      <div className="w-full max-w-md glass-panel rounded-3xl shadow-2xl p-8 border border-white/10 relative overflow-hidden">
+        
+        {/* Glow ambient background inside card */}
+        <div className="absolute -top-12 -right-12 w-36 h-36 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
         {/* Header */}
-        <div className="text-center mb-7">
-
-          <div className="w-12 h-12 mx-auto mb-3 bg-purple-100 rounded-2xl flex items-center justify-center">
-            <LockKeyhole
-              className="text-purple-600"
-              size={25}
-            />
+        <div className="text-center mb-8 relative">
+          <div className="w-14 h-14 mx-auto mb-3.5 bg-gradient-to-tr from-indigo-600/30 to-purple-600/30 border border-indigo-500/30 rounded-2xl flex items-center justify-center shadow-lg text-indigo-400">
+            <LockKeyhole size={28} />
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Welcome Back
           </h1>
 
-          <p className="text-gray-500 mt-1">
-            Login to access your passwords
+          <p className="text-slate-400 text-xs sm:text-sm mt-1">
+            Access and manage your encrypted credentials vault
           </p>
-
         </div>
 
-
-        <form
-          onSubmit={submitData}
-          className="space-y-5"
-        >
-
+        <form onSubmit={submitData} className="space-y-4">
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              Email Address
             </label>
 
             <div className="relative">
-
               <Mail
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
               />
-
               <input
                 type="email"
                 name="email"
                 value={input.email}
                 onChange={changeEventHandler}
                 required
-                placeholder="Enter your email"
-                className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl
-                outline-none focus:border-purple-500 focus:ring-2
-                focus:ring-purple-200 transition"
+                placeholder="name@example.com"
+                className="glass-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm"
               />
-
             </div>
           </div>
 
-
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Master Password
+              </label>
+            </div>
 
             <div className="relative">
-
               <LockKeyhole
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
               />
-
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={input.password}
                 onChange={changeEventHandler}
                 required
-                placeholder="Enter your password"
-                className="w-full pl-10 pr-11 py-3 border border-gray-300 rounded-xl
-                outline-none focus:border-purple-500 focus:ring-2
-                focus:ring-purple-200 transition"
+                placeholder="••••••••••••"
+                className="glass-input w-full pl-10 pr-11 py-3 rounded-2xl text-sm font-mono"
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2
-                text-gray-500 hover:text-purple-600 transition"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition cursor-pointer"
               >
-                {showPassword ? (
-                  <EyeOff size={19} />
-                ) : (
-                  <Eye size={19} />
-                )}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
-
             </div>
           </div>
 
-
           {/* Login Button */}
-          <button
-            type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700
-            text-white font-semibold py-3 rounded-xl
-            transition shadow-lg shadow-purple-200"
-          >
-            Login
-          </button>
-
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full btn-glow-primary font-bold py-3 px-6 rounded-2xl text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  <span>Unlocking Vault...</span>
+                </>
+              ) : (
+                <>
+                  <span>Log In to Vault</span>
+                  <ArrowRight size={16} />
+                </>
+              )}
+            </button>
+          </div>
         </form>
 
-
-        <p className="text-center text-gray-500 mt-6">
+        <p className="text-center text-slate-400 text-xs sm:text-sm mt-6">
           Don't have an account?{" "}
-
           <Link
             to="/signup"
-            className="text-purple-600 font-semibold hover:text-purple-800"
+            className="text-indigo-400 font-semibold hover:text-indigo-300 transition underline underline-offset-4"
           >
-            Sign Up
+            Create an Account
           </Link>
         </p>
 

@@ -1,60 +1,75 @@
-import React from "react";
+import { ShieldCheck, Zap, Lock, Cpu, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const About = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-700 via-fuchsia-500 to-pink-500 flex items-center justify-center px-5 py-10">
-      <div className="max-w-4xl w-full bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-10 text-white">
+  const features = [
+    {
+      icon: <Lock className="text-indigo-400" size={24} />,
+      title: "Zero-Knowledge Encryption",
+      desc: "Your data is encrypted so only you can unlock and read your stored credentials. No plaintext storage.",
+    },
+    {
+      icon: <Zap className="text-amber-400" size={24} />,
+      title: "Lightning Fast Access",
+      desc: "One-click copy, real-time search, and instant password generation built for maximum daily productivity.",
+    },
+    {
+      icon: <Cpu className="text-cyan-400" size={24} />,
+      title: "Modern Tech Stack",
+      desc: "Engineered with React 19, Vite, Tailwind CSS, Base UI, and Express MongoDB backend for reliable speed.",
+    },
+    {
+      icon: <ShieldCheck className="text-emerald-400" size={24} />,
+      title: "Strength Evaluation",
+      desc: "Real-time password security scoring to protect against credential leaks and brute-force vulnerabilities.",
+    },
+  ];
 
-        <h1 className="text-5xl font-bold text-center mb-6">
-          About <span className="text-green-400">PassOP</span>
+  return (
+    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-10">
+      {/* Header Banner */}
+      <div className="text-center space-y-4 max-w-2xl mx-auto">
+        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
+          About <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">PassOP</span>
         </h1>
 
-        <p className="text-lg leading-8 text-center text-gray-200">
-          <span className="font-bold text-white">PassOP</span> is a modern and
-          secure password manager that helps users safely store their website
-          credentials in one place.
+        <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+          <strong className="text-white font-semibold">PassOP</strong> is a modern, privacy-first password manager engineered to safely organize, encrypt, and manage all your digital identities in one centralized, intuitive vault.
         </p>
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mt-10">
-
-          <div className="bg-white/10 p-6 rounded-2xl">
-            <h2 className="text-2xl font-semibold mb-3">
-              🔒 Secure Storage
-            </h2>
-            <p className="text-gray-300">
-              Save website URLs, usernames and passwords in one secure place.
-            </p>
+      {/* Feature Grid */}
+      <div className="grid sm:grid-cols-2 gap-5">
+        {features.map((f, i) => (
+          <div
+            key={i}
+            className="glass-panel rounded-3xl p-6 border border-white/[0.08] hover:border-indigo-500/30 transition-all duration-300 group hover:-translate-y-1 shadow-lg"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+              {f.icon}
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">{f.title}</h3>
+            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">{f.desc}</p>
           </div>
+        ))}
+      </div>
 
-          <div className="bg-white/10 p-6 rounded-2xl">
-            <h2 className="text-2xl font-semibold mb-3">
-              ⚡ Fast & Simple
-            </h2>
-            <p className="text-gray-300">
-              A clean and responsive interface for managing passwords easily.
-            </p>
-          </div>
+      {/* Security Callout Banner */}
+      <div className="glass-panel rounded-3xl p-8 border border-white/[0.08] relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="absolute top-0 right-0 w-72 h-32 bg-indigo-600/15 blur-3xl pointer-events-none"></div>
 
-          <div className="bg-white/10 p-6 rounded-2xl">
-            <h2 className="text-2xl font-semibold mb-3">
-              💻 Built With
-            </h2>
-            <p className="text-gray-300">
-              React • Vite • Tailwind CSS • JavaScript
-            </p>
-          </div>
-
-          <div className="bg-white/10 p-6 rounded-2xl">
-            <h2 className="text-2xl font-semibold mb-3">
-              🎯 Goal
-            </h2>
-            <p className="text-gray-300">
-              Make password management simple, secure and user-friendly.
-            </p>
-          </div>
-
+        <div className="space-y-1 text-center sm:text-left">
+          <h3 className="text-xl font-bold text-white">Ready to secure your credentials?</h3>
+          <p className="text-slate-400 text-xs sm:text-sm">Store unlimited passwords with zero hassle.</p>
         </div>
 
+        <Link
+          to="/"
+          className="btn-glow-primary px-6 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 shrink-0 shadow-lg cursor-pointer"
+        >
+          <span>Open Password Vault</span>
+          <ArrowRight size={16} />
+        </Link>
       </div>
     </div>
   );

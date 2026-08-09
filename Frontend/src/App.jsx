@@ -1,14 +1,13 @@
-import './App.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Navbar from './pages/Navbar'
-import Home from './pages/Home'
-import About from './pages/About'
-import Contect from './pages/Contect'
-import Manger from './pages/Manger'
-import UpadteData from './curd Method/update';
+import Layout from './design/Layout';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import UpdateData from './pages/Update';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
 import Profile from './pages/Profile';
+import SavedPasswords from './pages/SavedPasswords';
 import { Toaster } from "sonner";
 
 function App() {
@@ -16,64 +15,65 @@ function App() {
     {
       path: "/signup",
       element: (
-        <>
-          <Navbar />
+        <Layout>
           <Signup />
-        </>
+        </Layout>
       ),
     },
     {
       path: "/login",
       element: (
-        <>
-          <Navbar />
+        <Layout>
           <Login />
-        </>
+        </Layout>
       ),
     },
     {
       path: "/",
       element: (
-        <>
-          <Navbar />
-          <Manger />
+        <Layout>
           <Home />
-        </>
+        </Layout>
       ),
     },
     {
       path: "/about",
       element: (
-        <>
-          <Navbar />
+        <Layout>
           <About />
-        </>
+        </Layout>
       ),
     },
     {
       path: "/contact",
       element: (
-        <>
-          <Navbar />
-          <Contect />
-        </>
+        <Layout>
+          <Contact />
+        </Layout>
       ),
     },
     {
       path: "/update",
       element: (
-        <>
-          <UpadteData />
-        </>
+        <Layout>
+          <UpdateData />
+        </Layout>
       ),
     },
     {
       path: "/profile",
       element: (
-        <>
-          <Navbar />
+        <Layout>
           <Profile />
-        </>
+        </Layout>
+      ),
+    },
+    {
+      path: "/saved-passwords",
+      element: (
+        <Layout>
+          <SavedPasswords />
+        </Layout>
       ),
     },
   ]);
@@ -81,7 +81,18 @@ function App() {
   return (
     <>
       <RouterProvider router={passwordRouter} />
-      <Toaster position="bottom-right" />
+      <Toaster 
+        theme="dark" 
+        position="bottom-right" 
+        toastOptions={{
+          style: {
+            background: 'rgba(15, 23, 42, 0.95)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#f8fafc',
+            backdropFilter: 'blur(12px)',
+          },
+        }}
+      />
     </>
   );
 }
