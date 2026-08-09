@@ -5,11 +5,17 @@ import axios from "axios";
 import { toast } from "sonner";
 import CopyButton from "../components/CopyButton";
 import PasswordStrength from "../components/PasswordStrength";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
 export default function Display({ users = [], getPasswords }) {
   const [visibleIndex, setVisibleIndex] = useState(null);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+  // Delete modal state
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const showPassword = (index) => {
     setVisibleIndex(index);
@@ -24,16 +30,26 @@ export default function Display({ users = [], getPasswords }) {
     });
   };
 
-  const deletePassword = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this password?")) return;
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!itemToDelete) return;
+    setDeleteLoading(true);
     try {
-      const res = await axios.delete(`${BASE_URL}/${id}`, { withCredentials: true });
+      const res = await axios.delete(`${BASE_URL}/${itemToDelete._id}`, { withCredentials: true });
       if (res.data.success) {
         toast.success(res.data.message || "Password deleted successfully");
-        await getPasswords();
+        setIsDeleteModalOpen(false);
+        setItemToDelete(null);
+        if (getPasswords) await getPasswords();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete password");
+      toast.error(error.response?.data?.message || error.response?.data?.Message || "Failed to delete password");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -119,15 +135,17 @@ export default function Display({ users = [], getPasswords }) {
                   <td className="px-5 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
+                        type="button"
                         onClick={() => updateData(item._id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition cursor-pointer"
+                        className="p-2 rounded-xl text-slate-400 hover:text-indigo-300 hover:bg-indigo-500/15 transition cursor-pointer"
                         title="Edit"
                       >
                         <Pencil size={15} />
                       </button>
                       <button
-                        onClick={() => deletePassword(item._id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+                        type="button"
+                        onClick={() => handleDeleteClick(item)}
+                        className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/15 transition cursor-pointer"
                         title="Delete"
                       >
                         <Trash2 size={15} />
@@ -140,6 +158,20 @@ export default function Display({ users = [], getPasswords }) {
           </tbody>
         </table>
       </div>
+
+      {/* Custom Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          if (!deleteLoading) {
+            setIsDeleteModalOpen(false);
+            setItemToDelete(null);
+          }
+        }}
+        onConfirm={handleConfirmDelete}
+        item={itemToDelete}
+        loading={deleteLoading}
+      />
     </div>
   );
 }

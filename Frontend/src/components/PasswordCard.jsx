@@ -27,9 +27,9 @@ export default function PasswordCard({ item, onEdit, onDelete }) {
   return (
     <div className="glass-panel-interactive rounded-3xl p-5 flex flex-col justify-between group relative overflow-hidden">
       {/* Decorative top accent glow */}
-      <div className="absolute -top-10 -right-10 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:bg-indigo-500/20 transition-all"></div>
+      <div className="absolute -top-10 -right-10 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:bg-indigo-500/20 transition-all pointer-events-none"></div>
 
-      <div>
+      <div className="relative z-10">
         {/* Header: Domain avatar & Actions */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-white/[0.08]">
           <div className="flex items-center gap-3 min-w-0">
@@ -56,20 +56,28 @@ export default function PasswordCard({ item, onEdit, onDelete }) {
           </div>
 
           {/* Action Buttons: Edit & Delete */}
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0 relative z-20">
             <button
-              onClick={() => onEdit(item._id)}
-              className="p-1.5 rounded-xl text-slate-400 hover:text-indigo-300 hover:bg-indigo-500/15 transition cursor-pointer"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(item._id);
+              }}
+              className="p-2 rounded-xl text-slate-400 hover:text-indigo-300 hover:bg-indigo-500/20 transition cursor-pointer"
               title="Edit Password"
             >
-              <Pencil size={15} />
+              <Pencil size={16} />
             </button>
             <button
-              onClick={() => onDelete(item._id)}
-              className="p-1.5 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/15 transition cursor-pointer"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(item);
+              }}
+              className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/20 transition cursor-pointer"
               title="Delete Password"
             >
-              <Trash2 size={15} />
+              <Trash2 size={16} />
             </button>
           </div>
         </div>

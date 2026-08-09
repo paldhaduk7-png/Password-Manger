@@ -12,6 +12,7 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import PasswordCard from "../components/PasswordCard";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
 const SavedPasswords = () => {
   const navigate = useNavigate();
@@ -20,6 +21,11 @@ const SavedPasswords = () => {
   const [passwords, setPasswords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Delete modal state
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -47,21 +53,32 @@ const SavedPasswords = () => {
     };
   }, [BASE_URL]);
 
-  // Delete password
-  const handleDeletePassword = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this password?")) return;
+  // Trigger delete modal
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setIsDeleteModalOpen(true);
+  };
+
+  // Confirm delete handler
+  const handleConfirmDelete = async () => {
+    if (!itemToDelete) return;
+    setDeleteLoading(true);
 
     try {
-      const res = await axios.delete(`${BASE_URL}/${id}`, {
+      const res = await axios.delete(`${BASE_URL}/${itemToDelete._id}`, {
         withCredentials: true,
       });
 
       if (res.data.success) {
         toast.success(res.data.message || "Password deleted successfully");
-        setPasswords((prev) => prev.filter((p) => p._id !== id));
+        setPasswords((prev) => prev.filter((p) => p._id !== itemToDelete._id));
+        setIsDeleteModalOpen(false);
+        setItemToDelete(null);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete password");
+      toast.error(error.response?.data?.message || error.response?.data?.Message || "Failed to delete password");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -184,11 +201,25 @@ const SavedPasswords = () => {
               key={item._id}
               item={item}
               onEdit={handleEditPassword}
-              onDelete={handleDeletePassword}
+              onDelete={handleDeleteClick}
             />
           ))}
         </div>
       )}
+
+      {/* Custom Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          if (!deleteLoading) {
+            setIsDeleteModalOpen(false);
+            setItemToDelete(null);
+          }
+        }}
+        onConfirm={handleConfirmDelete}
+        item={itemToDelete}
+        loading={deleteLoading}
+      />
     </div>
   );
 };
