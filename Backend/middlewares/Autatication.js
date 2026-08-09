@@ -7,17 +7,17 @@ const isAuthenticated=async (req,res, next)=>{
         const token=req.cookies.token;
         if(!token){
             return res.status(401).json({
-                Message: "User not authntication",
+                message: "User not authenticated. Please log in.",
                 success: false
             });
         }
 
     //if token exist then decode them    
-const decode= await jwt.verify(token, process.env.SECRET_KEY);
+    const decode = await jwt.verify(token, process.env.SECRET_KEY);
     if(!decode){
-        return res.status(400).json({
-            message: "inavlid token",
-            success:false
+        return res.status(401).json({
+            message: "Invalid or expired token. Please log in again.",
+            success: false
         });
         
     }
