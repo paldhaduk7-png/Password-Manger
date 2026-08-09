@@ -8,70 +8,82 @@ import Manger from './pages/Manger'
 import UpadteData from './curd Method/update';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
+import Profile from './pages/Profile';
 import { Toaster } from "sonner";
 
-
 function App() {
- 
- const  passwordRouter= createBrowserRouter([
-      {
-       path:"/signup",
-       element:
-       <>
-       <Navbar />
-       <Signup />
-       </>
-    },
-   {
-       path:"/login",
-       element:
-       <>
-       <Navbar />
-       <Login />
-      
-       </>
+  const passwordRouter = createBrowserRouter([
+    {
+      path: "/signup",
+      element: (
+        <>
+          <Navbar />
+          <Signup />
+        </>
+      ),
     },
     {
-       path:"/",
-       element:
-       <>
-       <Navbar />
-       <Manger />
-       <Home />
-       </>
+      path: "/login",
+      element: (
+        <>
+          <Navbar />
+          <Login />
+        </>
+      ),
     },
     {
-       path:"/about",
-       element:
-       <>
-       <Navbar />
-       <About />
-       </>
+      path: "/",
+      element: (
+        <>
+          <Navbar />
+          <Manger />
+          <Home />
+        </>
+      ),
     },
     {
-       path:"/contact",
-       element:
-       <>
-       <Navbar />
-       <Contect />
-       </>
+      path: "/about",
+      element: (
+        <>
+          <Navbar />
+          <About />
+        </>
+      ),
     },
     {
-       path:"/update",
-       element:
-       <>
-       <UpadteData />
-       </>
+      path: "/contact",
+      element: (
+        <>
+          <Navbar />
+          <Contect />
+        </>
+      ),
     },
-  ]
-)
+    {
+      path: "/update",
+      element: (
+        <>
+          <UpadteData />
+        </>
+      ),
+    },
+    {
+      path: "/profile",
+      element: (
+        <>
+          <Navbar />
+          <Profile />
+        </>
+      ),
+    },
+  ]);
 
   return (
     <>
-    <RouterProvider router={passwordRouter} />
-    <Toaster position="bottom-right" />
+      <RouterProvider router={passwordRouter} />
+      <Toaster position="bottom-right" />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
