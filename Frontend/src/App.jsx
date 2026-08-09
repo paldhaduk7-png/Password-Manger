@@ -8,6 +8,7 @@ import Login from './auth/Login';
 import Signup from './auth/Signup';
 import Profile from './pages/Profile';
 import SavedPasswords from './pages/SavedPasswords';
+import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from "sonner";
 
 function App() {
@@ -32,7 +33,9 @@ function App() {
       path: "/",
       element: (
         <Layout>
-          <Home />
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
         </Layout>
       ),
     },
@@ -56,7 +59,9 @@ function App() {
       path: "/update",
       element: (
         <Layout>
-          <UpdateData />
+          <ProtectedRoute>
+            <UpdateData />
+          </ProtectedRoute>
         </Layout>
       ),
     },
@@ -64,7 +69,9 @@ function App() {
       path: "/profile",
       element: (
         <Layout>
-          <Profile />
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
         </Layout>
       ),
     },
@@ -72,7 +79,9 @@ function App() {
       path: "/saved-passwords",
       element: (
         <Layout>
-          <SavedPasswords />
+          <ProtectedRoute>
+            <SavedPasswords />
+          </ProtectedRoute>
         </Layout>
       ),
     },

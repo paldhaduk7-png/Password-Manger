@@ -84,8 +84,9 @@ const Home = () => {
         toast.success(res.data.message || "Password saved securely!");
       }
     } catch (error) {
-      console.log(error.response?.data);
-      toast.error(error.response?.data?.message || "Failed to save password");
+      console.log("Save password error:", error.response?.data || error.message);
+      const errMsg = error.response?.data?.message || error.response?.data?.Message || "Failed to save password";
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }

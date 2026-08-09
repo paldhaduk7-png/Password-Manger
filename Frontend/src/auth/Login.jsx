@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../ContextAPI/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff, LockKeyhole, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
@@ -8,6 +8,7 @@ import axios from "axios";
 const Login = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUser, updateUser } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +46,8 @@ const Login = () => {
           setUser(res.data.user);
         }
         toast.success(res.data.message || "Logged in successfully!");
-        navigate("/");
+        const from = location.state?.from?.pathname || "/";
+        navigate(from, { replace: true });
       }
     } catch (error) {
       toast.error(
