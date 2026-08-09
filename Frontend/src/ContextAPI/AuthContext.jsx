@@ -4,6 +4,7 @@ import React, { createContext, useState } from "react";
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
+  
   // 2. Initial state loaded safely from localStorage
   const [user, setUser] = useState(() => {
     try {

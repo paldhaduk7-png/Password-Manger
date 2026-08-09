@@ -127,7 +127,7 @@ const Signup = () => {
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 ) : (
                   <User className="text-purple-600 w-12 h-12" />

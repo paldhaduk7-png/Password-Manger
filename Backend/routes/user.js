@@ -9,7 +9,6 @@ router.post("/register", singleUpload, register);
 router.post("/login", Login);
 router.post("/logout", logout);
 router.put("/update-profile", isAuthenticated, singleUpload, updateProfile);
-router.put("/profile/update", isAuthenticated, singleUpload, updateProfile);
 router.get("/profile", isAuthenticated, getProfile);
 
 export default router;

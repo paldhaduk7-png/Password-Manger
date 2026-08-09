@@ -97,7 +97,7 @@ const Navbar = () => {
                   <img
                     src={user.profilePicture}
                     alt={user.fullname || "Profile"}
-                    className='w-7 h-7 rounded-full object-cover border border-white/60 shadow-sm'
+                    className='w-7 h-7 rounded-full object-cover object-top border border-white/60 shadow-sm'
                   />
                 ) : (
                   <div className='w-7 h-7 rounded-full bg-white text-purple-700 font-bold text-xs flex items-center justify-center shadow-sm'>
@@ -120,7 +120,7 @@ const Navbar = () => {
                         <img
                           src={user.profilePicture}
                           alt={user.fullname}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover object-top"
                         />
                       ) : (
                         <span className="text-lg font-bold text-purple-700">
