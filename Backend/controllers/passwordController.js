@@ -36,10 +36,10 @@ export const addPassword = async (req, res) => {
   }
 };
 
-// 2) R:- (get all passwords for authenticated user)
+// 2) R:- (get all passwords for authenticated user, sorted by favorites first)
 export const getAllPasswords = async (req, res) => {
   try {
-    const passwords = await Password.find({ user: req.id }).sort({ createdAt: -1 });
+    const passwords = await Password.find({ user: req.id }).sort({ isFavorite: -1, createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -83,18 +83,23 @@ export const getPassword = async (req, res) => {
 // 3) U:- Update password with ownership check
 export const updatePassword = async (req, res) => {
   try {
-    const { weburl, username, password } = req.body;
+    const { weburl, username, password, isFavorite } = req.body;
+
+    const updateFields = {
+      weburl,
+      username,
+      password,
+    };
+    if (typeof isFavorite === "boolean") {
+      updateFields.isFavorite = isFavorite;
+    }
 
     const updated = await Password.findOneAndUpdate(
       {
         _id: req.params.id,
         user: req.id,
       },
-      {
-        weburl,
-        username,
-        password,
-      },
+      updateFields,
       { new: true }
     );
 
@@ -141,6 +146,37 @@ export const deletePassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || "Failed to delete password",
+    });
+  }
+};
+
+// 5) Toggle Favorite / Pinned status
+export const toggleFavorite = async (req, res) => {
+  try {
+    const password = await Password.findOne({
+      _id: req.params.id,
+      user: req.id,
+    });
+
+    if (!password) {
+      return res.status(404).json({
+        success: false,
+        message: "Password not found or unauthorized",
+      });
+    }
+
+    password.isFavorite = !password.isFavorite;
+    await password.save();
+
+    return res.status(200).json({
+      success: true,
+      message: password.isFavorite ? "Added to favorites ⭐" : "Removed from favorites",
+      data: password,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to toggle favorite status",
     });
   }
 };

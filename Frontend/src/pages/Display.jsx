@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pencil, Trash2, Eye, EyeOff, ExternalLink } from "lucide-react";
+import { Pencil, Trash2, Eye, EyeOff, ExternalLink, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
@@ -28,6 +28,22 @@ export default function Display({ users = [], getPasswords }) {
     navigate("/update", {
       state: { id }
     });
+  };
+
+  const handleToggleFavorite = async (id) => {
+    try {
+      const res = await axios.patch(
+        `${BASE_URL}/${id}/favorite`,
+        {},
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        if (getPasswords) await getPasswords();
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update favorite status");
+    }
   };
 
   const handleDeleteClick = (item) => {
@@ -75,25 +91,40 @@ export default function Display({ users = [], getPasswords }) {
               return (
                 <tr
                   key={item._id || index}
-                  className="hover:bg-slate-800/40 transition-colors duration-150 group"
+                  className={`hover:bg-slate-800/40 transition-colors duration-150 group ${
+                    item.isFavorite ? "bg-amber-500/[0.04]" : ""
+                  }`}
                 >
                   {/* Website column */}
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 uppercase">
+                      {/* Avatar */}
+                      <div className={`w-8 h-8 rounded-xl border flex items-center justify-center font-bold text-xs shrink-0 uppercase ${
+                        item.isFavorite
+                          ? "bg-amber-500/15 border-amber-500/30 text-amber-300"
+                          : "bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
+                      }`}>
                         {displayUrl.charAt(0) || "W"}
                       </div>
+
                       <div className="min-w-0 max-w-[200px] sm:max-w-[260px]">
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-slate-200 hover:text-indigo-400 transition flex items-center gap-1.5 truncate"
-                          title={item.weburl}
-                        >
-                          <span className="truncate">{displayUrl}</span>
-                          <ExternalLink size={12} className="shrink-0 text-slate-500 opacity-0 group-hover:opacity-100 transition" />
-                        </a>
+                        <div className="flex items-center gap-1.5">
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-slate-200 hover:text-indigo-400 transition flex items-center gap-1.5 truncate"
+                            title={item.weburl}
+                          >
+                            <span className="truncate">{displayUrl}</span>
+                            <ExternalLink size={12} className="shrink-0 text-slate-500 opacity-0 group-hover:opacity-100 transition" />
+                          </a>
+                          {item.isFavorite && (
+                            <span className="px-1.5 py-0.2 rounded-md bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300 shrink-0">
+                              PINNED
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -134,6 +165,18 @@ export default function Display({ users = [], getPasswords }) {
                   {/* Action column */}
                   <td className="px-5 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleFavorite(item._id)}
+                        className={`p-2 rounded-xl transition cursor-pointer ${
+                          item.isFavorite
+                            ? "text-amber-400 bg-amber-400/15 border border-amber-400/30 hover:bg-amber-400/25 shadow-sm"
+                            : "text-slate-400 hover:text-amber-300 hover:bg-amber-400/10"
+                        }`}
+                        title={item.isFavorite ? "Remove from Favorites" : "Pin to Favorites"}
+                      >
+                        <Star size={15} className={item.isFavorite ? "fill-amber-400 text-amber-400" : ""} />
+                      </button>
                       <button
                         type="button"
                         onClick={() => updateData(item._id)}

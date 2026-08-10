@@ -7,12 +7,13 @@ import {
   Trash2, 
   User, 
   Lock, 
-  Calendar
+  Calendar,
+  Star
 } from "lucide-react";
 import CopyButton from "./CopyButton";
 import PasswordStrength from "./PasswordStrength";
 
-export default function PasswordCard({ item, onEdit, onDelete }) {
+export default function PasswordCard({ item, onEdit, onDelete, onToggleFavorite }) {
   const [isVisible, setIsVisible] = useState(false);
 
   // Clean domain name for display
@@ -25,38 +26,72 @@ export default function PasswordCard({ item, onEdit, onDelete }) {
   const hrefUrl = item.weburl?.startsWith("http") ? item.weburl : `https://${item.weburl}`;
 
   return (
-    <div className="glass-panel-interactive rounded-3xl p-5 flex flex-col justify-between group relative overflow-hidden">
+    <div className={`glass-panel-interactive rounded-3xl p-5 flex flex-col justify-between group relative overflow-hidden ${
+      item.isFavorite ? "border-amber-500/30 shadow-lg shadow-amber-500/5 bg-slate-900/80" : ""
+    }`}>
       {/* Decorative top accent glow */}
-      <div className="absolute -top-10 -right-10 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:bg-indigo-500/20 transition-all pointer-events-none"></div>
+      <div className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-xl transition-all pointer-events-none ${
+        item.isFavorite ? "bg-amber-500/15 group-hover:bg-amber-500/25" : "bg-indigo-500/10 group-hover:bg-indigo-500/20"
+      }`}></div>
 
       <div className="relative z-10">
         {/* Header: Domain avatar & Actions */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-white/[0.08]">
           <div className="flex items-center gap-3 min-w-0">
             {/* Domain Favicon / Letter Badge */}
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600/30 to-purple-600/30 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-base shadow-sm shrink-0 uppercase">
+            <div className={`w-10 h-10 rounded-2xl border text-base flex items-center justify-center font-bold shadow-sm shrink-0 uppercase ${
+              item.isFavorite
+                ? "bg-gradient-to-tr from-amber-600/30 to-orange-600/30 border-amber-500/40 text-amber-300 shadow-amber-500/20"
+                : "bg-gradient-to-tr from-indigo-600/30 to-purple-600/30 border-indigo-500/30 text-indigo-300"
+            }`}>
               {initialLetter}
             </div>
 
             <div className="min-w-0">
-              <a
-                href={hrefUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-bold text-slate-100 hover:text-indigo-400 transition truncate block text-base flex items-center gap-1.5 group/link"
-                title={item.weburl}
-              >
-                <span className="truncate">{displayDomain}</span>
-                <ExternalLink size={13} className="shrink-0 text-slate-500 group-hover/link:text-indigo-400 transition" />
-              </a>
+              <div className="flex items-center gap-1.5">
+                <a
+                  href={hrefUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-slate-100 hover:text-indigo-400 transition truncate block text-base flex items-center gap-1.5 group/link"
+                  title={item.weburl}
+                >
+                  <span className="truncate">{displayDomain}</span>
+                  <ExternalLink size={13} className="shrink-0 text-slate-500 group-hover/link:text-indigo-400 transition" />
+                </a>
+                {item.isFavorite && (
+                  <span className="px-1.5 py-0.2 rounded-md bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300 shrink-0">
+                    PINNED
+                  </span>
+                )}
+              </div>
               <span className="text-[11px] text-slate-500 truncate block">
                 {item.weburl}
               </span>
             </div>
           </div>
 
-          {/* Action Buttons: Edit & Delete */}
-          <div className="flex items-center gap-1.5 shrink-0 relative z-20">
+          {/* Action Buttons: Favorite, Edit & Delete */}
+          <div className="flex items-center gap-1 shrink-0 relative z-20">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onToggleFavorite) onToggleFavorite(item._id);
+              }}
+              className={`p-2 rounded-xl transition cursor-pointer ${
+                item.isFavorite
+                  ? "text-amber-400 bg-amber-400/15 border border-amber-400/30 hover:bg-amber-400/25 shadow-sm shadow-amber-400/20"
+                  : "text-slate-400 hover:text-amber-300 hover:bg-amber-400/10"
+              }`}
+              title={item.isFavorite ? "Unpin / Remove Favorite" : "Pin / Add to Favorites"}
+            >
+              <Star
+                size={16}
+                className={item.isFavorite ? "fill-amber-400 text-amber-400" : ""}
+              />
+            </button>
+
             <button
               type="button"
               onClick={(e) => {
