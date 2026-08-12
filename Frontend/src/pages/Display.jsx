@@ -25,7 +25,7 @@ export default function Display({ users = [], getPasswords }) {
   };
 
   const updateData = (id) => {
-    navigate("/update", {
+    navigate(`/update/${id}`, {
       state: { id }
     });
   };

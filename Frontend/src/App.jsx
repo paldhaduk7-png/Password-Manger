@@ -66,6 +66,16 @@ function App() {
       ),
     },
     {
+      path: "/update/:id",
+      element: (
+        <Layout>
+          <ProtectedRoute>
+            <UpdateData />
+          </ProtectedRoute>
+        </Layout>
+      ),
+    },
+    {
       path: "/profile",
       element: (
         <Layout>

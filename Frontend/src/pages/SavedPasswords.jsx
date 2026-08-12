@@ -110,7 +110,7 @@ const SavedPasswords = () => {
 
   // Navigate to update page
   const handleEditPassword = (id) => {
-    navigate("/update", {
+    navigate(`/update/${id}`, {
       state: { id },
     });
   };

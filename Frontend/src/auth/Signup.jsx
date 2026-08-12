@@ -64,6 +64,16 @@ const Signup = () => {
   const submitData = async (e) => {
     e.preventDefault();
 
+    const trimmedFullname = input.fullname?.trim();
+    const trimmedEmail = input.email?.trim();
+    const trimmedPhone = input.phonenumber?.trim();
+    const trimmedBio = input.bio?.trim();
+
+    if (!trimmedFullname || !trimmedEmail || !trimmedPhone || !input.password) {
+      toast.error("Please fill in all required fields (Name, Email, Phone, Password)");
+      return;
+    }
+
     if (input.password !== input.confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -73,11 +83,11 @@ const Signup = () => {
 
     try {
       const formData = new FormData();
-      formData.append("fullname", input.fullname);
-      formData.append("email", input.email);
-      formData.append("phonenumber", input.phonenumber);
+      formData.append("fullname", trimmedFullname);
+      formData.append("email", trimmedEmail);
+      formData.append("phonenumber", trimmedPhone);
       formData.append("password", input.password);
-      formData.append("bio", input.bio);
+      formData.append("bio", trimmedBio);
 
       if (selectedFile) {
         formData.append("profilePicture", selectedFile);
