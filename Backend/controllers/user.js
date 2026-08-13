@@ -3,25 +3,50 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cloudinary from "../config/cloudinary.js";
 
+// Helper to determine cookie options
+const getCookieOptions = () => ({
+  maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+  httpOnly: true,
+  sameSite: "lax",
+  path: "/",
+});
+
+// --- REGISTER ---
 export const register = async (req, res) => {
   try {
-    const { fullname, email, phonenumber, password, bio } = req.body;
+    let { fullname, email, phonenumber, password, bio } = req.body;
+
+    fullname = fullname?.trim();
+    email = email?.trim().toLowerCase();
+    phonenumber = phonenumber ? String(phonenumber).trim() : "";
+    bio = bio?.trim() || "";
+
     if (!fullname || !email || !phonenumber || !password) {
       return res.status(400).json({
-        message: "All fields are required",
+        message: "All fields are required (Full name, Email, Phone number, and Password)",
         success: false,
       });
     }
 
-    let user = await User.findOne({ email: email.toLowerCase() });
-
-    if (user) {
+    // Check if email already exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
       return res.status(400).json({
-        message: "Email is Already Exist",
+        message: "An account with this email already exists",
         success: false,
       });
     }
 
+    // Check if phonenumber already exists
+    const existingPhone = await User.findOne({ phonenumber });
+    if (existingPhone) {
+      return res.status(400).json({
+        message: "An account with this phone number already exists",
+        success: false,
+      });
+    }
+
+    // Profile picture upload (optional)
     let profilePictureUrl = "";
     if (req.file && req.file.buffer) {
       try {
@@ -38,30 +63,34 @@ export const register = async (req, res) => {
         profilePictureUrl = uploadResult.secure_url;
       } catch (cloudErr) {
         console.error("Cloudinary error during registration:", cloudErr);
-        return res.status(400).json({
-          message: `Cloudinary Error (${cloudErr.http_code || 403}): ${cloudErr.message || "Invalid Cloudinary API keys"}. Please verify CLOUD_NAME, API_KEY, and API_SECRET in Backend/.env.`,
-          success: false,
-        });
+        profilePictureUrl = "";
       }
     }
 
-    let hasedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
       fullname,
-      email: email.toLowerCase(),
+      email,
       phonenumber,
-      password: hasedPassword,
-      bio: bio || "",
+      password: hashedPassword,
+      bio,
       profilePicture: profilePictureUrl,
     });
 
     return res.status(201).json({
-      message: "Account created successfully",
+      message: "Account created successfully! Please log in.",
       success: true,
     });
   } catch (error) {
     console.error("Registration error:", error);
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern || {})[0] || "field";
+      return res.status(400).json({
+        message: `An account with this ${field} already exists`,
+        success: false,
+      });
+    }
     return res.status(500).json({
       message: error.message || "Something went wrong during registration",
       success: false,
@@ -69,40 +98,43 @@ export const register = async (req, res) => {
   }
 };
 
+// --- LOGIN ---
 export const Login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+
+    email = email?.trim().toLowerCase();
 
     if (!email || !password) {
       return res.status(400).json({
-        message: "All fields are required",
+        message: "Email and password are required",
         success: false,
       });
     }
 
-    // check email exist
-    let user = await User.findOne({ email: email.toLowerCase() });
+    // Check user existence
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
-        message: "Incorrect email",
+        message: "Incorrect email or password",
         success: false,
       });
     }
 
-    // check password exist
+    // Check password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({
-        message: "Incorrect password",
+        message: "Incorrect email or password",
         success: false,
       });
     }
 
-    // now generate token for user
+    // Generate JWT token
     const tokenData = {
       userId: user._id,
     };
-    const token = await jwt.sign(tokenData, process.env.SECRET_KEY, {
+    const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
 
@@ -115,34 +147,39 @@ export const Login = async (req, res) => {
       profilePicture: user.profilePicture || "",
     };
 
-    // store token in cookie
     return res
       .status(200)
-      .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: "lax",
-      })
+      .cookie("token", token, getCookieOptions())
       .json({
-        message: `Welcome back ${user.fullname}`,
+        message: `Welcome back, ${user.fullname}!`,
         user: userData,
         success: true,
       });
   } catch (error) {
+    console.error("Login error:", error);
     return res.status(500).json({
-      message: "Login failed",
+      message: "Login failed due to a server error",
       success: false,
     });
   }
 };
 
+// --- LOGOUT ---
 export const logout = async (req, res) => {
   try {
-    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
-      message: "Logged out successfully",
-      success: true,
-    });
+    return res
+      .status(200)
+      .cookie("token", "", {
+        ...getCookieOptions(),
+        maxAge: 0,
+        expires: new Date(0),
+      })
+      .json({
+        message: "Logged out successfully",
+        success: true,
+      });
   } catch (error) {
+    console.error("Logout error:", error);
     return res.status(500).json({
       message: error.message || "Something went wrong during logout",
       success: false,
@@ -150,10 +187,11 @@ export const logout = async (req, res) => {
   }
 };
 
+// --- UPDATE PROFILE ---
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.id;
-    const { fullname, phonenumber, bio } = req.body;
+    let { fullname, phonenumber, bio } = req.body;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -163,7 +201,25 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    // Upload req.file.buffer to Cloudinary using upload_stream
+    // Check if new phonenumber is already taken by another user
+    if (phonenumber !== undefined) {
+      const trimmedPhone = String(phonenumber).trim();
+      if (trimmedPhone && trimmedPhone !== user.phonenumber) {
+        const existingPhone = await User.findOne({
+          phonenumber: trimmedPhone,
+          _id: { $ne: userId },
+        });
+        if (existingPhone) {
+          return res.status(400).json({
+            message: "Phone number is already associated with another account",
+            success: false,
+          });
+        }
+        user.phonenumber = trimmedPhone;
+      }
+    }
+
+    // Upload new profile picture to Cloudinary if provided
     if (req.file && req.file.buffer) {
       try {
         const uploadResult = await new Promise((resolve, reject) => {
@@ -181,15 +237,14 @@ export const updateProfile = async (req, res) => {
       } catch (cloudErr) {
         console.error("Cloudinary error during profile update:", cloudErr);
         return res.status(400).json({
-          message: `Cloudinary Error (${cloudErr.http_code || 403}): ${cloudErr.message || "Invalid Cloudinary API keys"}. Please verify CLOUD_NAME, API_KEY, and API_SECRET in Backend/.env.`,
+          message: "Failed to upload profile picture. Please check image format and size.",
           success: false,
         });
       }
     }
 
-    if (fullname) user.fullname = fullname;
-    if (phonenumber) user.phonenumber = phonenumber;
-    if (bio !== undefined) user.bio = bio;
+    if (fullname !== undefined && fullname.trim()) user.fullname = fullname.trim();
+    if (bio !== undefined) user.bio = bio.trim();
 
     await user.save();
 
@@ -209,6 +264,12 @@ export const updateProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Update profile error:", error);
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Phone number is already associated with another account",
+        success: false,
+      });
+    }
     return res.status(500).json({
       message: error.message || "Failed to update profile",
       success: false,
@@ -216,6 +277,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+// --- GET PROFILE ---
 export const getProfile = async (req, res) => {
   try {
     const userId = req.id;
@@ -231,6 +293,7 @@ export const getProfile = async (req, res) => {
       success: true,
     });
   } catch (error) {
+    console.error("Get profile error:", error);
     return res.status(500).json({
       message: error.message || "Failed to fetch profile",
       success: false,

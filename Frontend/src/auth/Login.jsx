@@ -110,6 +110,12 @@ const Login = () => {
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
                 Master Password
               </label>
+              <Link
+                to="/forgot-password"
+                className="text-xs text-indigo-400 hover:text-indigo-300 transition font-medium"
+              >
+                Forgot Password?
+              </Link>
             </div>
 
             <div className="relative">

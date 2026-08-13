@@ -54,7 +54,12 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
-    if (!user.url || !user.userName || !user.password) {
+
+    const trimmedUrl = user.url?.trim();
+    const trimmedUsername = user.userName?.trim();
+    const trimmedPassword = user.password?.trim();
+
+    if (!trimmedUrl || !trimmedUsername || !trimmedPassword) {
       toast.error("Please fill in all fields (URL, Username, and Password)");
       return;
     }
@@ -64,9 +69,9 @@ const Home = () => {
       const res = await axios.post(
         `${BASE_URL}/addPassword`,
         {
-          weburl: user.url,
-          username: user.userName,
-          password: user.password
+          weburl: trimmedUrl,
+          username: trimmedUsername,
+          password: trimmedPassword
         },
         {
           withCredentials: true

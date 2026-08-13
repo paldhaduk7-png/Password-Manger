@@ -59,13 +59,23 @@ const UpdateProfile = ({ isOpen, onClose }) => {
   // Submit profile updates to backend
   const handleSaveProfile = async (e) => {
     e.preventDefault();
+
+    const trimmedFullname = formData.fullname?.trim();
+    const trimmedPhone = formData.phonenumber?.trim();
+    const trimmedBio = formData.bio?.trim();
+
+    if (!trimmedFullname) {
+      toast.error("Full name cannot be empty");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const data = new FormData();
-      data.append("fullname", formData.fullname);
-      data.append("phonenumber", formData.phonenumber);
-      data.append("bio", formData.bio);
+      data.append("fullname", trimmedFullname);
+      data.append("phonenumber", trimmedPhone || "");
+      data.append("bio", trimmedBio || "");
 
       if (selectedFile) {
         data.append("profilePicture", selectedFile);
