@@ -14,6 +14,7 @@ import {
   X,
   Sparkles
 } from "lucide-react";
+import LogoutModal from "../components/LogoutModal";
 
 const Navbar = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -23,6 +24,8 @@ const Navbar = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const dropdownRef = useRef(null);
 
   // Close dropdown on click outside
@@ -38,7 +41,8 @@ const Navbar = () => {
     };
   }, []);
 
-  const UserLogout = async () => {
+  const handleConfirmLogout = async () => {
+    setLogoutLoading(true);
     try {
       const res = await axios.post(
         `${BASE_URL}/logout`,
@@ -49,6 +53,7 @@ const Navbar = () => {
       if (res.data.success) {
         setUser(null);
         localStorage.removeItem("user");
+        setShowLogoutModal(false);
         toast.success(res.data.message || "Logged out successfully");
         navigate("/login");
       }
@@ -56,6 +61,8 @@ const Navbar = () => {
       toast.error(
         error.response?.data?.message || "Logout failed"
       );
+    } finally {
+      setLogoutLoading(false);
     }
   };
 
@@ -249,7 +256,7 @@ const Navbar = () => {
                     <button
                       onClick={() => {
                         setMenuOpen(false);
-                        UserLogout();
+                        setShowLogoutModal(true);
                       }}
                       className="w-full border border-rose-500/20 hover:border-rose-500/40 rounded-2xl p-2.5 flex items-center gap-3 hover:bg-rose-500/10 transition cursor-pointer text-left group"
                     >
@@ -372,9 +379,9 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     setMobileNavOpen(false);
-                    UserLogout();
+                    setShowLogoutModal(true);
                   }}
-                  className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 flex items-center gap-2"
+                  className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 cursor-pointer"
                 >
                   <LogOut size={16} />
                   <span>Log Out</span>
@@ -401,6 +408,15 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+        user={user}
+        loading={logoutLoading}
+      />
     </nav>
   );
 };

@@ -70,7 +70,7 @@ const ForgotPassword = () => {
       if (res.data.success) {
         setStep(2);
         setResendCooldown(60); // 60-second cooldown
-        toast.success(res.data.message || "6-digit verification code sent to your inbox!");
+        toast.success(res.data.message || "OTP sent successfully");
       }
     } catch (error) {
       console.error("Send OTP error:", error);
