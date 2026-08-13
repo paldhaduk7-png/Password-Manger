@@ -6,6 +6,8 @@ import Contact from './pages/Contact';
 import UpdateData from './pages/Update';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
+import ForgotPassword from './auth/ForgotPassword';
+import ResetPassword from './auth/ResetPassword';
 import Profile from './pages/Profile';
 import SavedPasswords from './pages/SavedPasswords';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -26,6 +28,22 @@ function App() {
       element: (
         <Layout>
           <Login />
+        </Layout>
+      ),
+    },
+    {
+      path: "/forgot-password",
+      element: (
+        <Layout>
+          <ForgotPassword />
+        </Layout>
+      ),
+    },
+    {
+      path: "/reset-password/:token",
+      element: (
+        <Layout>
+          <ResetPassword />
         </Layout>
       ),
     },
