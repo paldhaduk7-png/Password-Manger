@@ -9,11 +9,28 @@ import cookieParser from "cookie-parser";
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({
-    origin: "http://localhost:5173",
-     origin: process.env.CLIENT_URL,
-    credentials: true
-}))
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.startsWith("http://localhost:")
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
+    credentials: true,
+  })
+);
 
 connectDB();
 const PORT=process.env.PORT || 3000;

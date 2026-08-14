@@ -75,7 +75,7 @@ const ForgotPassword = () => {
     } catch (error) {
       console.error("Send OTP error:", error);
       toast.error(
-        error.response?.data?.message || "Failed to dispatch verification code. Please check email configuration."
+        error.response?.data?.message || (error.response ? "Failed to dispatch verification code." : "Cannot connect to server. Please ensure the backend is running.")
       );
     } finally {
       setLoading(false);

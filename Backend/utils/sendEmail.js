@@ -1,12 +1,17 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_FROM,
-    pass: process.env.EMAIL_KEY,
-  },
-});
+const getTransporter = () => {
+  const user = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+  const pass = (process.env.EMAIL_KEY || process.env.EMAIL_PASS || "").replace(/\s+/g, "").trim();
+
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user,
+      pass,
+    },
+  });
+};
 
 /**
  * Send email using Nodemailer with HTML and CSS support
@@ -38,6 +43,7 @@ const sendEmail = async (emailOrOptions, subject, text, html) => {
       ...(mailHtml ? { html: mailHtml } : {}),
     };
 
+    const transporter = getTransporter();
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent successfully");
     return info;
