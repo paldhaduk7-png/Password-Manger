@@ -362,5 +362,5 @@ export const generateResetPasswordEmail = (resetUrl, userFullname) => {
   `;
 };
 
-export { transporter, sendEmail };
+export { getTransporter, sendEmail };
 export default sendEmail;
