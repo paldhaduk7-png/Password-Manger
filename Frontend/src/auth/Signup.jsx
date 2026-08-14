@@ -16,6 +16,7 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import PasswordStrength from "../components/PasswordStrength";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 const Signup = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
@@ -357,6 +358,17 @@ const Signup = () => {
             </button>
           </div>
         </form>
+
+        {/* Divider */}
+        <div className="relative my-6 flex items-center justify-center">
+          <div className="border-t border-white/10 w-full"></div>
+          <span className="bg-slate-900 px-3 text-[11px] font-semibold tracking-wider uppercase text-slate-500 absolute">
+            Or sign up with
+          </span>
+        </div>
+
+        {/* Google Authentication */}
+        <GoogleLoginButton text="signup_with" />
 
         <p className="text-center text-slate-400 text-xs sm:text-sm mt-5">
           Already have an account?{" "}
