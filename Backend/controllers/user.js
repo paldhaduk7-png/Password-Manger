@@ -2,6 +2,9 @@ import { User } from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cloudinary from "../config/cloudinary.js";
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper to determine cookie options
 const getCookieOptions = () => ({
@@ -296,6 +299,107 @@ export const getProfile = async (req, res) => {
     console.error("Get profile error:", error);
     return res.status(500).json({
       message: error.message || "Failed to fetch profile",
+      success: false,
+    });
+  }
+};
+
+// --- GOOGLE AUTHENTICATION ---
+export const googleAuth = async (req, res) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({
+        message: "Google credential token is required",
+        success: false,
+      });
+    }
+
+    // Verify Google ID Token
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res.status(400).json({
+        message: "Invalid Google token payload",
+        success: false,
+      });
+    }
+
+    const { sub: googleId, email, name: fullname, picture: profilePicture } = payload;
+    const normalizedEmail = email ? email.toLowerCase().trim() : "";
+
+    if (!normalizedEmail) {
+      return res.status(400).json({
+        message: "Google account does not provide an email address",
+        success: false,
+      });
+    }
+
+    // Check if user already exists with this email or googleId
+    let user = await User.findOne({
+      $or: [{ googleId }, { email: normalizedEmail }],
+    });
+
+    if (user) {
+      let isUpdated = false;
+      if (!user.googleId) {
+        user.googleId = googleId;
+        isUpdated = true;
+      }
+      if (!user.profilePicture && profilePicture) {
+        user.profilePicture = profilePicture;
+        isUpdated = true;
+      }
+      if (isUpdated) {
+        await user.save();
+      }
+    } else {
+      user = await User.create({
+        fullname: fullname || "Google User",
+        email: normalizedEmail,
+        googleId,
+        authProvider: "google",
+        profilePicture: profilePicture || "",
+        phonenumber: "",
+        bio: "",
+      });
+    }
+
+    // Generate JWT token
+    const tokenData = {
+      userId: user._id,
+    };
+    const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+
+    const userData = {
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      phonenumber: user.phonenumber || "",
+      bio: user.bio || "",
+      profilePicture: user.profilePicture || "",
+      authProvider: user.authProvider || "local",
+    };
+
+    return res
+      .status(200)
+      .cookie("token", token, getCookieOptions())
+      .json({
+        message: `Welcome, ${user.fullname}!`,
+        user: userData,
+        success: true,
+      });
+  } catch (error) {
+    console.error("Google Auth error:", error);
+    return res.status(500).json({
+      message: error.message || "Google authentication failed",
       success: false,
     });
   }

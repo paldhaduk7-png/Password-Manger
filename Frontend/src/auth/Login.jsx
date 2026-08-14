@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff, LockKeyhole, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 const Login = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
@@ -165,7 +166,18 @@ const Login = () => {
           </div>
         </form>
 
-        <p className="text-center text-slate-400 text-xs sm:text-sm mt-6">
+        {/* Divider */}
+        <div className="relative my-6 flex items-center justify-center">
+          <div className="border-t border-white/10 w-full"></div>
+          <span className="bg-slate-900 px-3 text-[11px] font-semibold tracking-wider uppercase text-slate-500 absolute">
+            Or continue with
+          </span>
+        </div>
+
+        {/* Google Authentication */}
+        <GoogleLoginButton text="signin_with" />
+
+        <p className="text-center text-slate-400 text-xs sm:text-sm mt-5">
           Don't have an account?{" "}
           <Link
             to="/signup"
@@ -174,7 +186,6 @@ const Login = () => {
             Create an Account
           </Link>
         </p>
-
       </div>
     </div>
   );

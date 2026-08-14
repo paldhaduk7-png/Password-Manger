@@ -15,13 +15,21 @@ const userSchema = mongoose.Schema({
     },
     phonenumber: {
         type: String,
-        required: true,
-        unique: true,
+        default: "",
         trim: true
     },
     password: {
         type: String,
-        required: true
+        default: ""
+    },
+    googleId: {
+        type: String,
+        default: null
+    },
+    authProvider: {
+        type: String,
+        enum: ["local", "google"],
+        default: "local"
     },
     profilePicture: {
         type: String,
