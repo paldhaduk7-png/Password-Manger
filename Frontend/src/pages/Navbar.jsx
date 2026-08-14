@@ -53,6 +53,7 @@ const Navbar = () => {
       if (res.data.success) {
         setUser(null);
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         setShowLogoutModal(false);
         toast.success(res.data.message || "Logged out successfully");
         navigate("/login");

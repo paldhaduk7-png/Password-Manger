@@ -7,12 +7,18 @@ import { OAuth2Client } from "google-auth-library";
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper to determine cookie options
-const getCookieOptions = () => ({
-  maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-  httpOnly: true,
-  sameSite: "lax",
-  path: "/",
-});
+const getCookieOptions = () => {
+  const isProduction =
+    process.env.NODE_ENV === "production" ||
+    (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes("localhost"));
+  return {
+    maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    httpOnly: true,
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction ? true : false,
+    path: "/",
+  };
+};
 
 // --- REGISTER ---
 export const register = async (req, res) => {
@@ -156,6 +162,7 @@ export const Login = async (req, res) => {
       .json({
         message: `Welcome back, ${user.fullname}!`,
         user: userData,
+        token,
         success: true,
       });
   } catch (error) {
@@ -394,6 +401,7 @@ export const googleAuth = async (req, res) => {
       .json({
         message: `Welcome, ${user.fullname}!`,
         user: userData,
+        token,
         success: true,
       });
   } catch (error) {

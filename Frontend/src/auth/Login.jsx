@@ -42,9 +42,10 @@ const Login = () => {
 
       if (res.data.success) {
         if (updateUser) {
-          updateUser(res.data.user);
+          updateUser(res.data.user, res.data.token);
         } else {
           setUser(res.data.user);
+          if (res.data.token) localStorage.setItem("token", res.data.token);
         }
         toast.success(res.data.message || "Logged in successfully!");
         const from = location.state?.from?.pathname || "/";
