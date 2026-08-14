@@ -1,62 +1,22 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from './design/Layout';
-import Home from './pages/Home';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import UpdateData from './pages/Update';
-import Login from './auth/Login';
-import Signup from './auth/Signup';
-import ForgotPassword from './auth/ForgotPassword';
-import ResetPassword from './auth/ResetPassword';
-import Profile from './pages/Profile';
-import SavedPasswords from './pages/SavedPasswords';
-import ProtectedRoute from './components/ProtectedRoute';
+import Layout from "./design/Layout";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import UpdateData from "./pages/Update";
+import Login from "./auth/Login";
+import Signup from "./auth/Signup";
+import ForgotPassword from "./auth/ForgotPassword";
+import ResetPassword from "./auth/ResetPassword";
+import Profile from "./pages/Profile";
+import SavedPasswords from "./pages/SavedPasswords";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 import { Toaster } from "sonner";
 
 function App() {
   const passwordRouter = createBrowserRouter([
-    {
-      path: "/signup",
-      element: (
-        <Layout>
-          <Signup />
-        </Layout>
-      ),
-    },
-    {
-      path: "/login",
-      element: (
-        <Layout>
-          <Login />
-        </Layout>
-      ),
-    },
-    {
-      path: "/forgot-password",
-      element: (
-        <Layout>
-          <ForgotPassword />
-        </Layout>
-      ),
-    },
-    {
-      path: "/reset-password/:token",
-      element: (
-        <Layout>
-          <ResetPassword />
-        </Layout>
-      ),
-    },
-    {
-      path: "/",
-      element: (
-        <Layout>
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        </Layout>
-      ),
-    },
+    // Public general pages (accessible by anyone)
     {
       path: "/about",
       element: (
@@ -73,60 +33,78 @@ function App() {
         </Layout>
       ),
     },
+
+    // Guest routes (accessible ONLY when logged out; redirects logged-in users to /)
     {
-      path: "/update",
       element: (
         <Layout>
-          <ProtectedRoute>
-            <UpdateData />
-          </ProtectedRoute>
+          <GuestRoute />
         </Layout>
       ),
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/signup",
+          element: <Signup />,
+        },
+        {
+          path: "/forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "/reset-password/:token",
+          element: <ResetPassword />,
+        },
+      ],
     },
+
+    // Protected routes (accessible ONLY when logged in; redirects logged-out users to /login)
     {
-      path: "/update/:id",
       element: (
         <Layout>
-          <ProtectedRoute>
-            <UpdateData />
-          </ProtectedRoute>
+          <ProtectedRoute />
         </Layout>
       ),
-    },
-    {
-      path: "/profile",
-      element: (
-        <Layout>
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        </Layout>
-      ),
-    },
-    {
-      path: "/saved-passwords",
-      element: (
-        <Layout>
-          <ProtectedRoute>
-            <SavedPasswords />
-          </ProtectedRoute>
-        </Layout>
-      ),
+      children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "/saved-passwords",
+          element: <SavedPasswords />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
+        {
+          path: "/update",
+          element: <UpdateData />,
+        },
+        {
+          path: "/update/:id",
+          element: <UpdateData />,
+        },
+      ],
     },
   ]);
 
   return (
     <>
       <RouterProvider router={passwordRouter} />
-      <Toaster 
-        theme="dark" 
-        position="bottom-right" 
+      <Toaster
+        theme="dark"
+        position="bottom-right"
         toastOptions={{
           style: {
-            background: 'rgba(15, 23, 42, 0.95)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            color: '#f8fafc',
-            backdropFilter: 'blur(12px)',
+            background: "rgba(15, 23, 42, 0.95)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            color: "#f8fafc",
+            backdropFilter: "blur(12px)",
           },
         }}
       />
