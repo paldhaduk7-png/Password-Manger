@@ -137,7 +137,7 @@ const SavedPasswords = () => {
         <div className="flex items-center gap-4">
           <Link
             to="/"
-            className="p-3 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-white/10 transition cursor-pointer shadow-sm"
+            className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-white/10 transition cursor-pointer shadow-sm"
             title="Back to Manager"
           >
             <ArrowLeft size={20} />
@@ -145,17 +145,17 @@ const SavedPasswords = () => {
 
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                 <KeyRound size={22} />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Saved Passwords
               </h1>
-              <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold">
+              <span className="px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 text-xs font-bold">
                 {passwords.length} {passwords.length === 1 ? "Item" : "Items"}
               </span>
             </div>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Encrypted vault containing all your secure account credentials
             </p>
           </div>
@@ -167,7 +167,7 @@ const SavedPasswords = () => {
           <div className="relative w-full sm:w-72">
             <Search
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
             />
             <input
               type="text"
@@ -179,7 +179,7 @@ const SavedPasswords = () => {
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
               >
                 <X size={15} />
               </button>
@@ -199,19 +199,19 @@ const SavedPasswords = () => {
 
       {/* Filter Tabs Bar (All vs Favorites) */}
       <div className="flex items-center justify-between gap-3 overflow-x-auto pb-1">
-        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-950/50 border border-white/[0.08] backdrop-blur-md">
+        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100/90 dark:bg-slate-950/50 border border-slate-200/80 dark:border-white/[0.08] backdrop-blur-md">
           <button
             type="button"
             onClick={() => setFilterTab("all")}
             className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               filterTab === "all"
                 ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                : "text-slate-400 hover:text-white hover:bg-white/5"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-white/5"
             }`}
           >
             <span>All Passwords</span>
             <span className={`px-2 py-0.2 rounded-full text-[10px] ${
-              filterTab === "all" ? "bg-white/20 text-white" : "bg-slate-800 text-slate-400"
+              filterTab === "all" ? "bg-white/20 text-white" : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
             }`}>
               {passwords.length}
             </span>
@@ -222,14 +222,14 @@ const SavedPasswords = () => {
             onClick={() => setFilterTab("favorites")}
             className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               filterTab === "favorites"
-                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md shadow-amber-500/25 font-extrabold"
-                : "text-slate-400 hover:text-amber-300 hover:bg-amber-400/10"
+                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white dark:text-slate-950 shadow-md shadow-amber-500/25 font-extrabold"
+                : "text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-400/10"
             }`}
           >
-            <Star size={13} className={filterTab === "favorites" ? "fill-slate-950 text-slate-950" : "text-amber-400"} />
+            <Star size={13} className={filterTab === "favorites" ? "fill-white dark:fill-slate-950 text-white dark:text-slate-950" : "text-amber-500"} />
             <span>Favorites</span>
             <span className={`px-2 py-0.2 rounded-full text-[10px] ${
-              filterTab === "favorites" ? "bg-slate-950/30 text-slate-950 font-black" : "bg-slate-800 text-amber-400"
+              filterTab === "favorites" ? "bg-white/30 dark:bg-slate-950/30 text-white dark:text-slate-950 font-black" : "bg-slate-200 dark:bg-slate-800 text-amber-600 dark:text-amber-400"
             }`}>
               {favoriteCount}
             </span>

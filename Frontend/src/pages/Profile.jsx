@@ -22,11 +22,11 @@ const Profile = () => {
       <div className="w-full max-w-lg glass-panel rounded-3xl shadow-2xl overflow-hidden relative border border-white/10">
         
         {/* Top Header Card Banner */}
-        <div className="bg-gradient-to-r from-indigo-900/80 via-purple-900/70 to-slate-900 px-6 pt-6 pb-16 text-white relative border-b border-white/[0.08]">
+        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-900 px-6 pt-6 pb-16 text-white relative border-b border-white/[0.08]">
           <div className="flex items-center justify-start">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-sm font-medium transition duration-200 bg-black/20 px-3 py-1.5 rounded-xl backdrop-blur-sm border border-white/10"
+              className="inline-flex items-center gap-2 text-white hover:text-indigo-100 text-sm font-medium transition duration-200 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-xl backdrop-blur-sm border border-white/20 shadow-sm"
             >
               <ArrowLeft size={16} />
               <span>Back to Home</span>
@@ -39,7 +39,7 @@ const Profile = () => {
           {/* Avatar (Click to Preview) */}
           <div
             onClick={() => user?.profilePicture && setIsPreviewOpen(true)}
-            className={`w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl overflow-hidden ring-4 ring-indigo-500/30 shadow-2xl bg-gradient-to-br from-slate-800 to-indigo-950 flex items-center justify-center relative z-20 group ${
+            className={`w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl overflow-hidden ring-4 ring-indigo-500/40 shadow-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center relative z-20 group ${
               user?.profilePicture ? "cursor-pointer" : ""
             }`}
             title={user?.profilePicture ? "Click to view full photo" : ""}
@@ -57,7 +57,7 @@ const Profile = () => {
                 </div>
               </>
             ) : (
-              <span className="text-3xl sm:text-4xl font-bold text-indigo-400 uppercase">
+              <span className="text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-tight">
                 {user?.fullname ? user.fullname.charAt(0) : "U"}
               </span>
             )}
@@ -65,13 +65,13 @@ const Profile = () => {
 
           {/* User Name & Role */}
           <div className="mt-4">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
               {user?.fullname || "User Profile"}
             </h1>
 
             {/* Role / Bio Pill */}
-            <div className="inline-flex items-center gap-2 mt-2 px-3.5 py-1 bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 rounded-full text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <div className="inline-flex items-center gap-2 mt-2 px-3.5 py-1 bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span>{user?.bio || "Active User"}</span>
             </div>
           </div>
@@ -79,45 +79,45 @@ const Profile = () => {
           {/* Information Details List */}
           <div className="mt-6 space-y-3 text-left">
             {/* Email Card */}
-            <div className="p-3.5 bg-slate-950/50 hover:bg-slate-950/70 transition rounded-2xl border border-white/[0.06] flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
+            <div className="p-3.5 bg-slate-100/90 dark:bg-slate-950/50 hover:bg-slate-200/80 dark:hover:bg-slate-950/70 transition rounded-2xl border border-slate-200/90 dark:border-white/[0.06] flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
                 <Mail size={18} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   Email Address
                 </p>
-                <p className="text-sm font-medium text-slate-200 truncate">
+                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
                   {user?.email || "No email provided"}
                 </p>
               </div>
             </div>
 
             {/* Phone Card */}
-            <div className="p-3.5 bg-slate-950/50 hover:bg-slate-950/70 transition rounded-2xl border border-white/[0.06] flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/20">
+            <div className="p-3.5 bg-slate-100/90 dark:bg-slate-950/50 hover:bg-slate-200/80 dark:hover:bg-slate-950/70 transition rounded-2xl border border-slate-200/90 dark:border-white/[0.06] flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/20">
                 <Phone size={18} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   Phone Number
                 </p>
-                <p className="text-sm font-medium text-slate-200 truncate">
+                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
                   {user?.phonenumber || "Not provided"}
                 </p>
               </div>
             </div>
 
             {/* Bio Card */}
-            <div className="p-3.5 bg-slate-950/50 hover:bg-slate-950/70 transition rounded-2xl border border-white/[0.06] flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5 border border-cyan-500/20">
+            <div className="p-3.5 bg-slate-100/90 dark:bg-slate-950/50 hover:bg-slate-200/80 dark:hover:bg-slate-950/70 transition rounded-2xl border border-slate-200/90 dark:border-white/[0.06] flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0 mt-0.5 border border-cyan-500/20">
                 <FileText size={18} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   Bio / Status
                 </p>
-                <p className="text-sm font-medium text-slate-200 whitespace-pre-wrap">
+                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 whitespace-pre-wrap">
                   {user?.bio || "Student / Pro User"}
                 </p>
               </div>

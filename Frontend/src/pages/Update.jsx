@@ -141,11 +141,11 @@ export default function UpdateData() {
     return (
       <div className="py-12 px-4 sm:px-6 flex items-center justify-center min-h-[calc(100vh-80px)]">
         <div className="w-full max-w-md glass-panel rounded-3xl p-8 border border-white/10 text-center space-y-4">
-          <div className="w-14 h-14 mx-auto bg-amber-500/15 border border-amber-500/30 text-amber-400 rounded-2xl flex items-center justify-center">
+          <div className="w-14 h-14 mx-auto bg-amber-500/15 border border-amber-500/30 text-amber-500 rounded-2xl flex items-center justify-center">
             <AlertCircle size={28} />
           </div>
-          <h2 className="text-xl font-bold text-white">No Credential Selected</h2>
-          <p className="text-sm text-slate-400">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">No Credential Selected</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Please choose a password from your vault or saved passwords list to edit.
           </p>
           <div className="pt-2">
@@ -164,22 +164,22 @@ export default function UpdateData() {
 
   return (
     <div className="py-12 px-4 sm:px-6 flex items-center justify-center min-h-[calc(100vh-80px)]">
-      <div className="w-full max-w-xl glass-panel rounded-3xl shadow-2xl p-8 border border-white/10 relative overflow-hidden">
+      <div className="w-full max-w-xl glass-panel rounded-3xl shadow-2xl p-8 border border-slate-200/80 dark:border-white/10 relative overflow-hidden">
         
         {/* Decorative background glow */}
         <div className="absolute -top-12 -right-12 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Top bar with back button */}
-        <div className="flex items-center justify-between pb-6 border-b border-white/[0.08] mb-6">
+        <div className="flex items-center justify-between pb-6 border-b border-slate-200/80 dark:border-white/[0.08] mb-6">
           <Link
             to="/saved-passwords"
-            className="inline-flex items-center gap-2 p-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-white/10 transition cursor-pointer"
+            className="inline-flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-white/10 transition cursor-pointer"
           >
             <ArrowLeft size={16} />
             <span className="text-xs font-semibold pr-1">Back to Vault</span>
           </Link>
 
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-500/15 dark:bg-indigo-500/10 border border-indigo-500/30 px-3 py-1 rounded-full">
             <Shield size={13} />
             <span>Editing Credential</span>
           </span>
@@ -188,17 +188,17 @@ export default function UpdateData() {
         {fetching ? (
           <div className="py-12 text-center flex flex-col items-center justify-center gap-3">
             <Loader2 size={32} className="animate-spin text-indigo-400" />
-            <p className="text-slate-400 text-sm font-medium">Decrypting & loading credential...</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Decrypting & loading credential...</p>
           </div>
         ) : (
           <form onSubmit={handleUpdatePassword} className="space-y-4">
             {/* Website URL */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
                 Website or App URL
               </label>
               <div className="relative">
-                <Globe size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Globe size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   name="url"
@@ -206,18 +206,18 @@ export default function UpdateData() {
                   onChange={handleInputChange}
                   placeholder="https://example.com"
                   required
-                  className="glass-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm"
+                  className="glass-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm text-slate-900 dark:text-slate-100"
                 />
               </div>
             </div>
 
             {/* Username */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
                 Username or Email
               </label>
               <div className="relative">
-                <User size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <User size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   name="userName"
@@ -225,7 +225,7 @@ export default function UpdateData() {
                   onChange={handleInputChange}
                   placeholder="Username"
                   required
-                  className="glass-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm"
+                  className="glass-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm text-slate-900 dark:text-slate-100"
                 />
               </div>
             </div>
@@ -233,13 +233,13 @@ export default function UpdateData() {
             {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                   Password
                 </label>
                 <button
                   type="button"
                   onClick={generateStrongPassword}
-                  className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 transition cursor-pointer font-medium"
+                  className="inline-flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition cursor-pointer font-semibold"
                 >
                   <RefreshCw size={12} />
                   <span>Generate New</span>
@@ -247,7 +247,7 @@ export default function UpdateData() {
               </div>
 
               <div className="relative">
-                <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -255,19 +255,19 @@ export default function UpdateData() {
                   onChange={handleInputChange}
                   placeholder="Password"
                   required
-                  className="glass-input w-full pl-10 pr-11 py-3 rounded-2xl text-sm font-mono"
+                  className="glass-input w-full pl-10 pr-11 py-3 rounded-2xl text-sm font-mono text-slate-900 dark:text-slate-100"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
 
               {user.password && (
-                <div className="mt-2 p-2.5 bg-slate-950/40 rounded-xl border border-white/[0.06]">
+                <div className="mt-2 p-2.5 bg-slate-100/90 dark:bg-slate-950/40 rounded-xl border border-slate-200/80 dark:border-white/[0.06]">
                   <PasswordStrength password={user.password} />
                 </div>
               )}
@@ -278,7 +278,7 @@ export default function UpdateData() {
               <button
                 type="button"
                 onClick={() => navigate("/saved-passwords")}
-                className="flex-1 py-3 px-4 rounded-2xl border border-white/10 text-slate-300 hover:bg-white/5 text-sm font-semibold transition cursor-pointer"
+                className="flex-1 py-3 px-4 rounded-2xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 text-sm font-semibold transition cursor-pointer"
               >
                 Cancel
               </button>

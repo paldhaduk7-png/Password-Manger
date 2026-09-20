@@ -107,19 +107,19 @@ const UpdateProfile = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 overflow-hidden transform animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden transform animate-in zoom-in-95 duration-200">
         
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-slate-950 border-b border-white/[0.08] text-white flex items-center justify-between">
-          <h2 className="text-base font-bold flex items-center gap-2 text-slate-100">
-            <Edit3 size={17} className="text-indigo-400" />
+        <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-white/[0.08] flex items-center justify-between">
+          <h2 className="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-slate-100">
+            <Edit3 size={17} className="text-indigo-600 dark:text-indigo-400" />
             Update Profile
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition cursor-pointer"
             title="Close"
           >
             <X size={16} />
@@ -135,7 +135,7 @@ const UpdateProfile = ({ isOpen, onClose }) => {
               onClick={() => fileInputRef.current?.click()}
               title="Click to change photo"
             >
-              <div className="w-20 h-20 rounded-2xl overflow-hidden ring-2 ring-indigo-500/40 shadow-lg bg-slate-800 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-2xl overflow-hidden ring-2 ring-indigo-500/40 shadow-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                 {imagePreview ? (
                   <img
                     src={imagePreview}
@@ -144,7 +144,7 @@ const UpdateProfile = ({ isOpen, onClose }) => {
                     style={{ objectPosition: "center 15%" }}
                   />
                 ) : (
-                  <User className="text-indigo-400 w-10 h-10" />
+                  <User className="text-indigo-500 dark:text-indigo-400 w-10 h-10" />
                 )}
               </div>
 
@@ -162,9 +162,9 @@ const UpdateProfile = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <span className="text-[11px] text-slate-400 mt-2 font-medium">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-medium">
               {selectedFile ? (
-                <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+                <span className="text-emerald-500 dark:text-emerald-400 flex items-center gap-1 font-semibold">
                   <CheckCircle2 size={12} /> {selectedFile.name}
                 </span>
               ) : (
@@ -175,11 +175,11 @@ const UpdateProfile = ({ isOpen, onClose }) => {
 
           {/* Full Name */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
               Full Name
             </label>
             <div className="relative">
-              <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
               <input
                 type="text"
                 name="fullname"
@@ -187,66 +187,66 @@ const UpdateProfile = ({ isOpen, onClose }) => {
                 onChange={handleInputChange}
                 required
                 placeholder="Enter your full name"
-                className="glass-input w-full pl-10 pr-3.5 py-2.5 rounded-xl text-sm"
+                className="glass-input w-full pl-10 pr-3.5 py-2.5 rounded-xl text-sm text-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
 
           {/* Phone Number */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
               Phone Number
             </label>
             <div className="relative">
-              <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
               <input
                 type="tel"
                 name="phonenumber"
                 value={formData.phonenumber}
                 onChange={handleInputChange}
                 placeholder="Enter your phone number"
-                className="glass-input w-full pl-10 pr-3.5 py-2.5 rounded-xl text-sm"
+                className="glass-input w-full pl-10 pr-3.5 py-2.5 rounded-xl text-sm text-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
 
           {/* Bio / Status */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
               Bio / Role
             </label>
             <div className="relative">
-              <FileText size={16} className="absolute left-3.5 top-3 text-slate-500" />
+              <FileText size={16} className="absolute left-3.5 top-3 text-slate-400 dark:text-slate-500" />
               <textarea
                 name="bio"
                 value={formData.bio}
                 onChange={handleInputChange}
                 rows={2}
                 placeholder="e.g. Student, Software Developer, Vault Admin"
-                className="glass-input w-full pl-10 pr-3.5 py-2.5 rounded-xl text-sm resize-none"
+                className="glass-input w-full pl-10 pr-3.5 py-2.5 rounded-xl text-sm resize-none text-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
 
           {/* Read-Only Email Field */}
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                 Email Address
               </label>
-              <span className="text-[10px] text-slate-500 flex items-center gap-1">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-white/5">
                 <Lock size={10} /> Read-only
               </span>
             </div>
             <div className="relative">
-              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
+              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 readOnly
                 disabled
-                className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950/80 border border-white/[0.04] rounded-xl text-sm text-slate-500 cursor-not-allowed select-none"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-slate-100 dark:bg-slate-950/80 border border-slate-200 dark:border-white/[0.06] rounded-xl text-sm text-slate-600 dark:text-slate-400 font-medium cursor-not-allowed select-none"
               />
             </div>
           </div>
@@ -257,7 +257,7 @@ const UpdateProfile = ({ isOpen, onClose }) => {
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="flex-1 py-2.5 px-4 rounded-xl border border-white/10 text-slate-300 hover:bg-white/5 text-sm font-semibold transition cursor-pointer"
+              className="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 text-sm font-semibold transition cursor-pointer"
             >
               Cancel
             </button>
