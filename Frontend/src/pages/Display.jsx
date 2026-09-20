@@ -70,11 +70,11 @@ export default function Display({ users = [], getPasswords }) {
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-950/40">
+    <div className="w-full overflow-hidden rounded-2xl border border-slate-200/80 dark:border-white/[0.08] bg-white/90 dark:bg-slate-950/40 shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/[0.08] bg-slate-900/70 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+            <tr className="border-b border-slate-200/80 dark:border-white/[0.08] bg-slate-50 dark:bg-slate-900/70 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider font-semibold">
               <th className="px-5 py-3.5">Website / App</th>
               <th className="px-5 py-3.5">Username</th>
               <th className="px-5 py-3.5">Password</th>
@@ -83,7 +83,7 @@ export default function Display({ users = [], getPasswords }) {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-white/[0.06] text-sm">
+          <tbody className="divide-y divide-slate-200/80 dark:divide-white/[0.06] text-sm">
             {users.map((item, index) => {
               const displayUrl = item.weburl ? item.weburl.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "") : "Unknown";
               const href = item.weburl?.startsWith("http") ? item.weburl : `https://${item.weburl}`;
@@ -91,8 +91,8 @@ export default function Display({ users = [], getPasswords }) {
               return (
                 <tr
                   key={item._id || index}
-                  className={`hover:bg-slate-800/40 transition-colors duration-150 group ${
-                    item.isFavorite ? "bg-amber-500/[0.04]" : ""
+                  className={`hover:bg-slate-100/70 dark:hover:bg-slate-800/40 transition-colors duration-150 group ${
+                    item.isFavorite ? "bg-amber-500/[0.05]" : ""
                   }`}
                 >
                   {/* Website column */}
@@ -101,8 +101,8 @@ export default function Display({ users = [], getPasswords }) {
                       {/* Avatar */}
                       <div className={`w-8 h-8 rounded-xl border flex items-center justify-center font-bold text-xs shrink-0 uppercase ${
                         item.isFavorite
-                          ? "bg-amber-500/15 border-amber-500/30 text-amber-300"
-                          : "bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
+                          ? "bg-amber-500/15 border-amber-500/30 text-amber-600 dark:text-amber-300"
+                          : "bg-indigo-500/10 border-indigo-500/20 text-indigo-600 dark:text-indigo-400"
                       }`}>
                         {displayUrl.charAt(0) || "W"}
                       </div>
@@ -113,14 +113,14 @@ export default function Display({ users = [], getPasswords }) {
                             href={href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-medium text-slate-200 hover:text-indigo-400 transition flex items-center gap-1.5 truncate"
+                            className="font-semibold text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition flex items-center gap-1.5 truncate"
                             title={item.weburl}
                           >
                             <span className="truncate">{displayUrl}</span>
-                            <ExternalLink size={12} className="shrink-0 text-slate-500 opacity-0 group-hover:opacity-100 transition" />
+                            <ExternalLink size={12} className="shrink-0 text-slate-400 opacity-0 group-hover:opacity-100 transition" />
                           </a>
                           {item.isFavorite && (
-                            <span className="px-1.5 py-0.2 rounded-md bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300 shrink-0">
+                            <span className="px-1.5 py-0.2 rounded-md bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-700 dark:text-amber-300 shrink-0">
                               PINNED
                             </span>
                           )}
@@ -132,7 +132,7 @@ export default function Display({ users = [], getPasswords }) {
                   {/* Username column */}
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-2 max-w-[180px]">
-                      <span className="text-slate-300 truncate font-mono text-xs">{item.username}</span>
+                      <span className="text-slate-700 dark:text-slate-300 truncate font-mono text-xs">{item.username}</span>
                       <CopyButton text={item.username} label="Username" />
                     </div>
                   </td>
@@ -140,14 +140,14 @@ export default function Display({ users = [], getPasswords }) {
                   {/* Password column */}
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs text-slate-300 w-28 truncate tracking-wider">
+                      <span className="font-mono text-xs text-slate-800 dark:text-slate-300 w-28 truncate tracking-wider">
                         {visibleIndex === index ? item.password : "••••••••••••"}
                       </span>
 
                       <button
                         type="button"
                         onClick={() => visibleIndex === index ? setVisibleIndex(null) : showPassword(index)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-indigo-500/10 transition cursor-pointer"
                         title={visibleIndex === index ? "Hide password" : "Show password (5s)"}
                       >
                         {visibleIndex === index ? <EyeOff size={14} /> : <Eye size={14} />}

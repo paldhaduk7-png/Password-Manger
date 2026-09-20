@@ -116,11 +116,11 @@ const Home = () => {
     <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-8">
       {/* Hero Section */}
       <div className="text-center space-y-3 pt-2 sm:pt-6">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight">
           Pass<span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">OP</span>
         </h1>
 
-        <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
+        <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
           Your personal zero-knowledge password vault. Store, generate, and autofill credentials effortlessly.
         </p>
       </div>
@@ -129,21 +129,21 @@ const Home = () => {
       <div className="glass-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-40 bg-gradient-to-bl from-indigo-600/15 via-purple-600/10 to-transparent blur-2xl pointer-events-none"></div>
 
-        <div className="flex items-center justify-between pb-5 border-b border-white/[0.08] mb-6">
+        <div className="flex items-center justify-between pb-5 border-b border-slate-200/80 dark:border-white/[0.08] mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
               <Plus size={20} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Add New Password</h2>
-              <p className="text-xs text-slate-400">Save a new credential to your encrypted storage</p>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Add New Password</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Save a new credential to your encrypted storage</p>
             </div>
           </div>
 
           <button
             type="button"
             onClick={generateStrongPassword}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-indigo-300 border border-white/10 hover:border-indigo-500/30 text-xs font-semibold transition cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-300 border border-slate-200 dark:border-white/10 hover:border-indigo-500/30 text-xs font-semibold transition cursor-pointer"
           >
             <RefreshCw size={13} />
             <span>Generate Password</span>
@@ -227,7 +227,7 @@ const Home = () => {
 
           {/* Password Strength Indicator (if typed) */}
           {user.password && (
-            <div className="p-3 bg-slate-950/40 rounded-2xl border border-white/[0.06]">
+            <div className="p-3 bg-slate-100/90 dark:bg-slate-950/40 rounded-2xl border border-slate-200/80 dark:border-white/[0.06]">
               <PasswordStrength password={user.password} />
             </div>
           )}
@@ -250,15 +250,15 @@ const Home = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <h2 className="text-xl font-extrabold text-white">Your Passwords</h2>
-            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-500/30">
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">Your Passwords</h2>
+            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 text-xs font-bold border border-indigo-500/30">
               {users.length}
             </span>
           </div>
 
           <Link
             to="/saved-passwords"
-            className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 group"
+            className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold flex items-center gap-1 group"
           >
             <span>View all in Vault</span>
             <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
