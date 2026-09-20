@@ -18,14 +18,14 @@ const Contact = () => {
       color: "bg-emerald-500/10 border-emerald-500/20",
     },
     {
-      icon: <FaGithub className="text-xl text-slate-200" />,
+      icon: <FaGithub className="text-xl text-slate-800 dark:text-slate-200" />,
       label: "GitHub Profile",
       value: "github.com/paldhaduk7-png",
       href: "https://github.com/paldhaduk7-png",
-      color: "bg-slate-800/60 border-slate-700/50",
+      color: "bg-slate-200/80 dark:bg-slate-800/60 border-slate-300 dark:border-slate-700/50",
     },
     {
-      icon: <FaLinkedin className="text-xl text-cyan-400" />,
+      icon: <FaLinkedin className="text-xl text-cyan-500 dark:text-cyan-400" />,
       label: "LinkedIn Profile",
       value: "linkedin.com/in/pal-dhaduk",
       href: "https://www.linkedin.com/in/",
@@ -46,11 +46,11 @@ const Contact = () => {
             <MessageSquare size={28} />
           </div>
 
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Get in Touch
           </h1>
 
-          <p className="text-slate-400 text-xs sm:text-sm mt-1">
+          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1">
             Questions, feedback, or collaborations? Reach out anytime.
           </p>
         </div>
@@ -60,14 +60,14 @@ const Contact = () => {
           {contactLinks.map((item, index) => (
             <div
               key={index}
-              className="p-4 rounded-2xl bg-slate-950/60 border border-white/[0.06] hover:border-indigo-500/30 transition-all flex items-center gap-4 group"
+              className="p-4 rounded-2xl bg-slate-100/90 dark:bg-slate-950/60 border border-slate-200/80 dark:border-white/[0.06] hover:border-indigo-500/40 hover:bg-slate-200/60 dark:hover:bg-slate-900/60 transition-all flex items-center gap-4 group"
             >
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${item.color} group-hover:scale-105 transition-transform`}>
                 {item.icon}
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   {item.label}
                 </p>
                 {item.href ? (
@@ -75,12 +75,12 @@ const Contact = () => {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-semibold text-slate-200 hover:text-indigo-400 transition truncate block"
+                    className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition truncate block"
                   >
                     {item.value}
                   </a>
                 ) : (
-                  <p className="text-sm font-semibold text-slate-200 truncate">
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
                     {item.value}
                   </p>
                 )}

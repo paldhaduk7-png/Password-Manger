@@ -29,12 +29,12 @@ const About = () => {
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-10">
       {/* Header Banner */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
+        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
           About <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">PassOP</span>
         </h1>
 
-        <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-          <strong className="text-white font-semibold">PassOP</strong> is a modern, privacy-first password manager engineered to safely organize, encrypt, and manage all your digital identities in one centralized, intuitive vault.
+        <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+          <strong className="text-slate-900 dark:text-white font-semibold">PassOP</strong> is a modern, privacy-first password manager engineered to safely organize, encrypt, and manage all your digital identities in one centralized, intuitive vault.
         </p>
       </div>
 
@@ -43,24 +43,24 @@ const About = () => {
         {features.map((f, i) => (
           <div
             key={i}
-            className="glass-panel rounded-3xl p-6 border border-white/[0.08] hover:border-indigo-500/30 transition-all duration-300 group hover:-translate-y-1 shadow-lg"
+            className="glass-panel rounded-3xl p-6 border border-slate-200/80 dark:border-white/[0.08] hover:border-indigo-500/30 transition-all duration-300 group hover:-translate-y-1 shadow-lg"
           >
-            <div className="w-12 h-12 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
               {f.icon}
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">{f.title}</h3>
-            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">{f.desc}</p>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{f.title}</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">{f.desc}</p>
           </div>
         ))}
       </div>
 
       {/* Security Callout Banner */}
-      <div className="glass-panel rounded-3xl p-8 border border-white/[0.08] relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="glass-panel rounded-3xl p-8 border border-slate-200/80 dark:border-white/[0.08] relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="absolute top-0 right-0 w-72 h-32 bg-indigo-600/15 blur-3xl pointer-events-none"></div>
 
         <div className="space-y-1 text-center sm:text-left">
-          <h3 className="text-xl font-bold text-white">Ready to secure your credentials?</h3>
-          <p className="text-slate-400 text-xs sm:text-sm">Store unlimited passwords with zero hassle.</p>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">Ready to secure your credentials?</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">Store unlimited passwords with zero hassle.</p>
         </div>
 
         <Link
