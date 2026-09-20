@@ -46,7 +46,7 @@ export default function DeleteConfirmModal({
       }}
     >
       <div
-        className="w-full max-w-md bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-rose-500/20 p-6 sm:p-7 relative overflow-hidden transform animate-in zoom-in-95 duration-200"
+        className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-rose-500/20 p-6 sm:p-7 relative overflow-hidden transform animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Glow ambient background inside card */}
@@ -58,7 +58,7 @@ export default function DeleteConfirmModal({
           type="button"
           onClick={onClose}
           disabled={loading}
-          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer disabled:opacity-50"
+          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition cursor-pointer disabled:opacity-50"
           title="Close"
         >
           <X size={18} />
@@ -66,15 +66,15 @@ export default function DeleteConfirmModal({
 
         {/* Icon & Heading */}
         <div className="flex items-start gap-4 mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center shrink-0 shadow-lg shadow-rose-500/10">
+          <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-500 flex items-center justify-center shrink-0 shadow-lg shadow-rose-500/10">
             <Trash2 size={24} />
           </div>
 
           <div className="min-w-0 pr-6">
-            <h3 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Delete Password?
             </h3>
-            <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
               This credential will be permanently removed from your vault.
             </p>
           </div>
@@ -82,25 +82,25 @@ export default function DeleteConfirmModal({
 
         {/* Target Item Details Card (if item info is passed) */}
         {item && (
-          <div className="my-4 p-3.5 rounded-2xl bg-slate-950/60 border border-white/[0.08] space-y-2">
+          <div className="my-4 p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.08] space-y-2">
             {item.weburl && (
-              <div className="flex items-center gap-2 text-xs text-slate-300">
-                <Globe size={14} className="text-slate-500 shrink-0" />
-                <span className="font-semibold text-slate-200 truncate">{displayUrl}</span>
+              <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
+                <Globe size={14} className="text-slate-400 shrink-0" />
+                <span className="font-semibold text-slate-800 dark:text-slate-200 truncate">{displayUrl}</span>
               </div>
             )}
             {item.username && (
-              <div className="flex items-center gap-2 text-xs text-slate-400">
-                <User size={14} className="text-slate-500 shrink-0" />
-                <span className="font-mono text-slate-300 truncate">{item.username}</span>
+              <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <User size={14} className="text-slate-400 shrink-0" />
+                <span className="font-mono text-slate-700 dark:text-slate-300 truncate">{item.username}</span>
               </div>
             )}
           </div>
         )}
 
         {/* Warning Banner */}
-        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-rose-950/30 border border-rose-500/20 text-rose-300 text-xs mb-6">
-          <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs mb-6">
+          <AlertTriangle size={15} className="shrink-0 text-rose-500 dark:text-rose-400" />
           <span>This action is irreversible and cannot be recovered.</span>
         </div>
 
@@ -110,7 +110,7 @@ export default function DeleteConfirmModal({
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="flex-1 py-3 px-4 rounded-2xl border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 font-semibold text-sm transition cursor-pointer disabled:opacity-50"
+            className="flex-1 py-3 px-4 rounded-2xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 font-semibold text-sm transition cursor-pointer disabled:opacity-50"
           >
             Cancel
           </button>

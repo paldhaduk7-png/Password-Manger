@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { AuthContext } from "../ContextAPI/AuthContext";
+import { useTheme } from "../ContextAPI/context";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 
 const GoogleLoginButton = ({ text = "continue_with" }) => {
+  const { theme } = useTheme();
   const BASE_URL = import.meta.env.VITE_BASE_URL_USER;
   const navigate = useNavigate();
   const location = useLocation();
@@ -67,7 +69,7 @@ const GoogleLoginButton = ({ text = "continue_with" }) => {
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
-            theme="filled_black"
+            theme={theme === "light" ? "outline" : "filled_black"}
             shape="pill"
             text={text}
             size="large"

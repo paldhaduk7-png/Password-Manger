@@ -13,8 +13,10 @@ import SavedPasswords from "./pages/SavedPasswords";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import { Toaster } from "sonner";
+import { useTheme } from "./ContextAPI/context";
 
 function App() {
+  const { theme } = useTheme();
   const passwordRouter = createBrowserRouter([
     // Public general pages (accessible by anyone)
     {
@@ -97,15 +99,23 @@ function App() {
     <>
       <RouterProvider router={passwordRouter} />
       <Toaster
-        theme="dark"
+        theme={theme}
         position="bottom-right"
         toastOptions={{
-          style: {
-            background: "rgba(15, 23, 42, 0.95)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            color: "#f8fafc",
-            backdropFilter: "blur(12px)",
-          },
+          style:
+            theme === "light"
+              ? {
+                  background: "rgba(255, 255, 255, 0.96)",
+                  border: "1px solid rgba(203, 213, 225, 0.8)",
+                  color: "#0f172a",
+                  backdropFilter: "blur(12px)",
+                }
+              : {
+                  background: "rgba(15, 23, 42, 0.95)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  color: "#f8fafc",
+                  backdropFilter: "blur(12px)",
+                },
         }}
       />
     </>
