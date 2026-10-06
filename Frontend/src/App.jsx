@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./design/Layout";
 import Home from "./pages/Home";
+import LandingPage from "./pages/LandingPage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import UpdateData from "./pages/Update";
@@ -19,6 +20,14 @@ function App() {
   const { theme } = useTheme();
   const passwordRouter = createBrowserRouter([
     // Public general pages (accessible by anyone)
+    {
+      path: "/",
+      element: (
+        <Layout>
+          <LandingPage />
+        </Layout>
+      ),
+    },
     {
       path: "/about",
       element: (
@@ -53,6 +62,10 @@ function App() {
           element: <Signup />,
         },
         {
+          path: "/register",
+          element: <Signup />,
+        },
+        {
           path: "/forgot-password",
           element: <ForgotPassword />,
         },
@@ -72,7 +85,7 @@ function App() {
       ),
       children: [
         {
-          path: "/",
+          path: "/dashboard",
           element: <Home />,
         },
         {

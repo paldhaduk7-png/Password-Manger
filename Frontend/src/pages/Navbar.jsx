@@ -112,6 +112,23 @@ const Navbar = () => {
               Home
             </Link>
 
+            {!user && (
+              <>
+                <a
+                  href="/#features"
+                  className="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
+                >
+                  Features
+                </a>
+                <a
+                  href="/#how-it-works"
+                  className="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
+                >
+                  How It Works
+                </a>
+              </>
+            )}
+
             {user && (
               <Link
                 to="/saved-passwords"
@@ -370,6 +387,25 @@ const Navbar = () => {
           >
             Home
           </Link>
+
+          {!user && (
+            <>
+              <a
+                href="/#features"
+                onClick={() => setMobileNavOpen(false)}
+                className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+              >
+                Features
+              </a>
+              <a
+                href="/#how-it-works"
+                onClick={() => setMobileNavOpen(false)}
+                className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+              >
+                How It Works
+              </a>
+            </>
+          )}
 
           {user && (
             <Link
