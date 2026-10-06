@@ -48,7 +48,7 @@ const Login = () => {
           if (res.data.token) localStorage.setItem("token", res.data.token);
         }
         toast.success(res.data.message || "Logged in successfully!");
-        const from = location.state?.from?.pathname || "/";
+        const from = location.state?.from?.pathname || "/dashboard";
         navigate(from, { replace: true });
       }
     } catch (error) {

@@ -61,7 +61,7 @@ const Navbar = () => {
         localStorage.removeItem("token");
         setShowLogoutModal(false);
         toast.success(res.data.message || "Logged out successfully");
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       toast.error(
@@ -73,6 +73,8 @@ const Navbar = () => {
   };
 
   const isActive = (path) => location.pathname === path;
+  const isLandingPage = location.pathname === "/";
+  const isAppRoute = ["/dashboard", "/saved-passwords", "/profile", "/update"].some(path => location.pathname.startsWith(path));
 
   return (
     <nav className="sticky top-0 z-50 bg-slate-950/75 backdrop-blur-xl border-b border-white/[0.08] transition-all duration-300">
@@ -101,18 +103,31 @@ const Navbar = () => {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-1">
-            <Link
-              to="/"
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive("/")
-                  ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
-              }`}
-            >
-              Home
-            </Link>
+            {(!user || isLandingPage) ? (
+              <Link
+                to="/"
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive("/")
+                    ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
+                }`}
+              >
+                Home
+              </Link>
+            ) : (
+              <Link
+                to="/dashboard"
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive("/dashboard")
+                    ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
+                }`}
+              >
+                Dashboard
+              </Link>
+            )}
 
-            {!user && (
+            {isLandingPage && (
               <>
                 <a
                   href="/#features"
@@ -129,7 +144,7 @@ const Navbar = () => {
               </>
             )}
 
-            {user && (
+            {user && !isLandingPage && (
               <Link
                 to="/saved-passwords"
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
@@ -143,27 +158,31 @@ const Navbar = () => {
               </Link>
             )}
 
-            <Link
-              to="/about"
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive("/about")
-                  ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
-              }`}
-            >
-              About
-            </Link>
+            {!isAppRoute && (
+              <>
+                <Link
+                  to="/about"
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    isActive("/about")
+                      ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
+                  }`}
+                >
+                  About
+                </Link>
 
-            <Link
-              to="/contact"
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive("/contact")
-                  ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
-              }`}
-            >
-              Contact
-            </Link>
+                <Link
+                  to="/contact"
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    isActive("/contact")
+                      ? "text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 shadow-inner"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-white/5"
+                  }`}
+                >
+                  Contact
+                </Link>
+              </>
+            )}
           </div>
 
           {/* User Profile / Auth Actions */}
@@ -378,17 +397,29 @@ const Navbar = () => {
       {/* Mobile Drawer */}
       {mobileNavOpen && (
         <div className="md:hidden bg-white/98 dark:bg-slate-950/95 border-b border-slate-200 dark:border-white/10 px-4 pt-2 pb-6 space-y-2 animate-in slide-in-from-top-2 duration-200">
-          <Link
-            to="/"
-            onClick={() => setMobileNavOpen(false)}
-            className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
-              isActive("/") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
-            }`}
-          >
-            Home
-          </Link>
+          {(!user || isLandingPage) ? (
+            <Link
+              to="/"
+              onClick={() => setMobileNavOpen(false)}
+              className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
+                isActive("/") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+              }`}
+            >
+              Home
+            </Link>
+          ) : (
+            <Link
+              to="/dashboard"
+              onClick={() => setMobileNavOpen(false)}
+              className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
+                isActive("/dashboard") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+              }`}
+            >
+              Dashboard
+            </Link>
+          )}
 
-          {!user && (
+          {isLandingPage && (
             <>
               <a
                 href="/#features"
@@ -407,7 +438,7 @@ const Navbar = () => {
             </>
           )}
 
-          {user && (
+          {user && !isLandingPage && (
             <Link
               to="/saved-passwords"
               onClick={() => setMobileNavOpen(false)}
@@ -419,25 +450,29 @@ const Navbar = () => {
             </Link>
           )}
 
-          <Link
-            to="/about"
-            onClick={() => setMobileNavOpen(false)}
-            className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
-              isActive("/about") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
-            }`}
-          >
-            About
-          </Link>
+          {!isAppRoute && (
+            <>
+              <Link
+                to="/about"
+                onClick={() => setMobileNavOpen(false)}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
+                  isActive("/about") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+                }`}
+              >
+                About
+              </Link>
 
-          <Link
-            to="/contact"
-            onClick={() => setMobileNavOpen(false)}
-            className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
-              isActive("/contact") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
-            }`}
-          >
-            Contact
-          </Link>
+              <Link
+                to="/contact"
+                onClick={() => setMobileNavOpen(false)}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
+                  isActive("/contact") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+                }`}
+              >
+                Contact
+              </Link>
+            </>
+          )}
 
           {/* Mobile Drawer Theme Switcher */}
           <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-white/[0.08]">

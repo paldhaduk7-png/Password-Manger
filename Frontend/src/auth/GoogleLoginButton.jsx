@@ -39,7 +39,7 @@ const GoogleLoginButton = ({ text = "continue_with" }) => {
         }
 
         toast.success(res.data.message || "Signed in with Google successfully!");
-        const from = location.state?.from?.pathname || "/";
+        const from = location.state?.from?.pathname || "/dashboard";
         navigate(from, { replace: true });
       }
     } catch (error) {
