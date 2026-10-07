@@ -11,6 +11,7 @@ import ForgotPassword from "./auth/ForgotPassword";
 import ResetPassword from "./auth/ResetPassword";
 import Profile from "./pages/Profile";
 import SavedPasswords from "./pages/SavedPasswords";
+import DeletedPasswords from "./pages/DeletedPasswords";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import { Toaster } from "sonner";
@@ -95,6 +96,10 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/trash",
+          element: <DeletedPasswords />,
         },
         {
           path: "/update",

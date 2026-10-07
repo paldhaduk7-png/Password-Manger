@@ -15,7 +15,8 @@ import {
   X,
   Sparkles,
   Sun,
-  Moon
+  Moon,
+  Trash2
 } from "lucide-react";
 import LogoutModal from "../components/LogoutModal";
 import { useTheme } from "../ContextAPI/context";
@@ -307,6 +308,18 @@ const Navbar = () => {
                         <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white">Security Guide</span>
                         <ChevronRight size={14} className="ml-auto text-slate-300 dark:text-slate-600 group-hover:text-purple-500 dark:group-hover:text-purple-400 group-hover:translate-x-0.5 transition-all duration-150" />
                       </Link>
+
+                      <Link
+                        to="/trash"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-slate-100/90 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-white transition-all duration-150 group"
+                      >
+                        <div className="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 group-hover:bg-rose-500/20 group-hover:scale-105 transition-all duration-150">
+                          <Trash2 size={18} />
+                        </div>
+                        <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white">Trash</span>
+                        <ChevronRight size={14} className="ml-auto text-slate-300 dark:text-slate-600 group-hover:text-rose-500 dark:group-hover:text-rose-400 group-hover:translate-x-0.5 transition-all duration-150" />
+                      </Link>
                     </div>
 
                     {/* Divider */}
@@ -439,15 +452,26 @@ const Navbar = () => {
           )}
 
           {user && !isLandingPage && (
-            <Link
-              to="/saved-passwords"
-              onClick={() => setMobileNavOpen(false)}
-              className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
-                isActive("/saved-passwords") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
-              }`}
-            >
-              Saved Passwords
-            </Link>
+            <>
+              <Link
+                to="/saved-passwords"
+                onClick={() => setMobileNavOpen(false)}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
+                  isActive("/saved-passwords") ? "bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+                }`}
+              >
+                Saved Passwords
+              </Link>
+              <Link
+                to="/trash"
+                onClick={() => setMobileNavOpen(false)}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
+                  isActive("/trash") ? "bg-rose-50 dark:bg-rose-600/20 text-rose-600 dark:text-rose-400" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+                }`}
+              >
+                Trash
+              </Link>
+            </>
           )}
 
           {!isAppRoute && (
