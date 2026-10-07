@@ -61,9 +61,22 @@ const DeletedPasswords = () => {
     }
   };
 
-  const handlePermanentDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to permanently delete this password? This action cannot be undone.")) return;
-    
+  const handlePermanentDelete = (id) => {
+    toast("Permanently delete this password?", {
+      description: "This action cannot be undone.",
+      action: {
+        label: "Delete",
+        onClick: () => executePermanentDelete(id)
+      },
+      cancel: {
+        label: "Cancel"
+      },
+      duration: 5000,
+      className: "border-rose-500/20 bg-rose-50/90 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400"
+    });
+  };
+
+  const executePermanentDelete = async (id) => {
     setActionLoading(id);
     try {
       const res = await axios.delete(`${BASE_URL}/${id}/permanent`, {
@@ -81,9 +94,22 @@ const DeletedPasswords = () => {
     }
   };
 
-  const handleEmptyTrash = async () => {
-    if (!window.confirm("Are you sure you want to permanently delete ALL items in the trash? This action cannot be undone.")) return;
-    
+  const handleEmptyTrash = () => {
+    toast("Empty Trash?", {
+      description: "Permanently delete ALL items in the trash? This action cannot be undone.",
+      action: {
+        label: "Empty Trash",
+        onClick: () => executeEmptyTrash()
+      },
+      cancel: {
+        label: "Cancel"
+      },
+      duration: 6000,
+      className: "border-rose-500/20 bg-rose-50/90 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400"
+    });
+  };
+
+  const executeEmptyTrash = async () => {
     setActionLoading("empty");
     try {
       const res = await axios.delete(`${BASE_URL}/deleted`, {
