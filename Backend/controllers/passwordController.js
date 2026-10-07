@@ -42,7 +42,7 @@ export const addPassword = async (req, res) => {
 // 2) R:- Get all passwords for authenticated user (favorites first, then newest)
 export const getAllPasswords = async (req, res) => {
   try {
-    const passwords = await Password.find({ user: req.id }).sort({
+    const passwords = await Password.find({ user: req.id, isDeleted: { $ne: true } }).sort({
       isFavorite: -1,
       createdAt: -1,
     });
@@ -168,10 +168,11 @@ export const deletePassword = async (req, res) => {
       });
     }
 
-    const deleted = await Password.findOneAndDelete({
-      _id: id,
-      user: req.id,
-    });
+    const deleted = await Password.findOneAndUpdate(
+      { _id: id, user: req.id },
+      { $set: { isDeleted: true, deletedAt: new Date() } },
+      { new: true }
+    );
 
     if (!deleted) {
       return res.status(404).json({
@@ -232,4 +233,122 @@ export const toggleFavorite = async (req, res) => {
       message: error.message || "Failed to toggle favorite status",
     });
   }
-};
+};
+
+// 6) Get deleted passwords
+export const getDeletedPasswords = async (req, res) => {
+  try {
+    const passwords = await Password.find({ user: req.id, isDeleted: true }).sort({
+      deletedAt: -1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: passwords,
+    });
+  } catch (error) {
+    console.error("Get deleted passwords error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch deleted passwords",
+    });
+  }
+};
+
+// 7) Restore password
+export const restorePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credential ID provided",
+      });
+    }
+
+    const restored = await Password.findOneAndUpdate(
+      { _id: id, user: req.id },
+      { $set: { isDeleted: false, deletedAt: null } },
+      { new: true }
+    );
+
+    if (!restored) {
+      return res.status(404).json({
+        success: false,
+        message: "Credential not found or unauthorized",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Credential restored successfully",
+      data: restored,
+    });
+  } catch (error) {
+    console.error("Restore password error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to restore credential",
+    });
+  }
+};
+
+// 8) Permanent delete password
+export const permanentDeletePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credential ID provided",
+      });
+    }
+
+    const deleted = await Password.findOneAndDelete({
+      _id: id,
+      user: req.id,
+    });
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Credential not found or unauthorized",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Credential permanently deleted",
+    });
+  } catch (error) {
+    console.error("Permanent delete password error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to permanently delete credential",
+    });
+  }
+};
+
+// 9) Empty trash
+export const emptyTrash = async (req, res) => {
+  try {
+    await Password.deleteMany({
+      user: req.id,
+      isDeleted: true
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Trash emptied successfully",
+    });
+  } catch (error) {
+    console.error("Empty trash error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to empty trash",
+    });
+  }
+};
+

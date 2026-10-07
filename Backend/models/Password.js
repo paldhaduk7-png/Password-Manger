@@ -21,7 +21,18 @@ password:{
   isFavorite: {
     type: Boolean,
     default: false
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
+  deletedAt: {
+    type: Date,
+    default: null
   }
 },{timestamps: true})
+
+passwordSchema.index({ deletedAt: 1 }, { expireAfterSeconds: 2592000 }); // 30 days
+
 
 export const Password=mongoose.model("Password", passwordSchema)
